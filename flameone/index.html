@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlameOne &mdash; combustion calculations for Mac and iPad</title>
+<style>
+:root {
+  --ink: #14171c; --dim: #5b626c; --line: #dfe3e8; --bg: #ffffff;
+  --panel: #f6f8fa; --accent: #b8440e; --accent-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6e9ee; --dim: #9aa1ab; --line: #2b3038; --bg: #16181c;
+    --panel: #1e2126; --accent: #ff8a5c; --accent-ink: #16181c;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header { padding: 72px 0 40px; }
+h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+.lede { font-size: 1.2rem; color: var(--dim); margin: 0 0 28px; max-width: 60ch; }
+h2 { font-size: 1.5rem; margin: 56px 0 14px; letter-spacing: -0.01em; }
+h3 { font-size: 1.05rem; margin: 28px 0 8px; }
+p { max-width: 68ch; }
+a { color: var(--accent); }
+.buy {
+  display: inline-block; background: var(--accent); color: var(--accent-ink);
+  padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 600;
+}
+.price { color: var(--dim); margin-left: 14px; }
+figure { margin: 28px 0; }
+img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+figcaption { color: var(--dim); font-size: 0.9rem; margin-top: 8px; }
+.panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 18px 22px; margin: 22px 0;
+}
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid .panel { margin: 0; }
+table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 0.94rem; }
+.scroll { overflow-x: auto; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { color: var(--dim); font-weight: 600; }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
+footer { margin: 72px 0 48px; padding-top: 24px; border-top: 1px solid var(--line);
+         color: var(--dim); font-size: 0.9rem; }
+footer a { color: var(--dim); }
+</style>
+</head>
+<body><div class="wrap">
+<nav aria-label="Main"><a href="index.html">FlameOne</a> &middot; <a href="support.html">Support</a> &middot; <a href="privacy.html">Privacy</a></nav>
+<header>
+<h1>FlameOne</h1>
+<p class="lede">Combustion calculations with the relation on the screen beside the
+number, and the limits of that relation beside both. Nineteen modules, NASA CEA data
+bundled offline, for Mac and iPad.</p>
+<p><a class="buy" href="#">App Store</a><span class="price">US$14.99 &middot; one
+purchase covers both</span></p>
+</header>
+
+<h2>What it covers</h2>
+
+<div class="grid">
+<div class="panel">
+<h3>Thermochemistry</h3>
+<p>Stoichiometry and equivalence ratio. Heating value. Adiabatic flame temperature,
+frozen or at equilibrium. Equilibrium composition at a given temperature and
+pressure.</p>
+</div>
+<div class="panel">
+<h3>Combustion waves</h3>
+<p>Rankine&ndash;Hugoniot in the pressure&ndash;volume plane, with the Rayleigh line,
+both intersections and all seven regions named. Chapman&ndash;Jouguet tangency. The
+von Neumann state behind the leading shock.</p>
+</div>
+<div class="panel">
+<h3>Laminar flames and limits</h3>
+<p>Laminar flame speed, by asymptotic solution or by scaling a measurement. Zeldovich
+and Lewis numbers, preheat and reaction zone thickness. Flammability limits. Thermal
+explosion. The stirred-reactor S-curve. Flame stretch. Quenching distance.</p>
+</div>
+<div class="panel">
+<h3>Non-premixed and turbulent</h3>
+<p>Mixture fraction and Burke&ndash;Schumann flame structure. Droplet evaporation and
+combustion, with lifetime and flame standoff. The turbulent regime diagram. Transport
+properties from the official fitted curves.</p>
+</div>
+</div>
+
+<h2>Change one input and the whole screen follows</h2>
+
+<p>Sweep the equivalence ratio and watch the equilibrium peak sit slightly rich of
+stoichiometric &mdash; then raise the pressure, watch dissociation retreat, and watch
+the peak move back toward one. A chat window can hand you a number. It cannot hand you
+the shape of that curve, or show you which way it moves when you lean on it.</p>
+
+<h2>It tells you what it does not know</h2>
+
+<p>Every screen carries the relation it uses and a standing note of what the model
+leaves out. Flammability limits are presented as measurements that depend on the
+apparatus, not as material constants. The equilibrium solver reports its iteration
+count and its largest element residual, so the trustworthiness of the answer is
+visible rather than assumed. Where two textbook sources disagree, both values are
+kept rather than averaged.</p>
+
+<h2>Output you can hand in</h2>
+
+<p>Export the conditions and results as CSV at 17 significant digits, so a downstream
+calculation reproduces exactly. Export any chart as a 2&times; PNG for a report or as
+vector PDF for typesetting. Every export carries the conditions it was computed under
+and the version that produced it.</p>
+
+<h2>Offline, and quiet</h2>
+
+<p>There is no networking code in the application. No account, no sign-in, no
+telemetry, nothing stored between sessions. It works on a plane, in an exam hall and
+in a basement laboratory.</p>
+
+<footer><p><a href="support.html">Support</a> &middot;
+<a href="privacy.html">Privacy</a> &middot;
+<a href="../index.html">All applications</a></p></footer>
+</div></body>
+</html>

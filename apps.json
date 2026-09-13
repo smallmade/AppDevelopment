@@ -1,0 +1,25 @@
+{
+  "site": {
+    "title": "AppDevelopment",
+    "lede": "Support and privacy for each application published here. Every one of them runs entirely on your own device, with no account and no network.",
+    "contact": "softwareone.support@gmail.com"
+  },
+  "_note": [
+    "slug 是資料夾名，因此也是 App Store Connect 記錄下來的 URL 的一部分。",
+    "一旦某個 App 送審，它的 slug 就固定了：改名會讓 ASC 裡已經填好的 Support 與",
+    "Privacy URL 失效，而一個 404 的隱私政策是會被拒審的。",
+    "",
+    "本站是**新建**的傘形站點，與既有的 smallmade.github.io 根站台各自獨立。",
+    "根站台上已上線的七個 App（gas-dynamics、mechanicsone、passthrough、plot4mac、",
+    "structuremechone、texone、thermodynamics）不在這裡，也不受這裡影響。"
+  ],
+  "apps": [
+    {
+      "slug": "flameone",
+      "name": "Combustion - FlameOne",
+      "tagline": "Nineteen combustion calculations with the relation on the screen beside the number, and the limits of that relation beside both. NASA CEA data bundled offline.",
+      "platforms": "Mac and iPad",
+      "status": "not-yet-submitted"
+    }
+  ]
+}

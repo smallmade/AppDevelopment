@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support &mdash; FlameOne</title>
+<style>
+:root {
+  --ink: #14171c; --dim: #5b626c; --line: #dfe3e8; --bg: #ffffff;
+  --panel: #f6f8fa; --accent: #b8440e; --accent-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6e9ee; --dim: #9aa1ab; --line: #2b3038; --bg: #16181c;
+    --panel: #1e2126; --accent: #ff8a5c; --accent-ink: #16181c;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header { padding: 72px 0 40px; }
+h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+.lede { font-size: 1.2rem; color: var(--dim); margin: 0 0 28px; max-width: 60ch; }
+h2 { font-size: 1.5rem; margin: 56px 0 14px; letter-spacing: -0.01em; }
+h3 { font-size: 1.05rem; margin: 28px 0 8px; }
+p { max-width: 68ch; }
+a { color: var(--accent); }
+.buy {
+  display: inline-block; background: var(--accent); color: var(--accent-ink);
+  padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 600;
+}
+.price { color: var(--dim); margin-left: 14px; }
+figure { margin: 28px 0; }
+img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+figcaption { color: var(--dim); font-size: 0.9rem; margin-top: 8px; }
+.panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 18px 22px; margin: 22px 0;
+}
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid .panel { margin: 0; }
+table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 0.94rem; }
+.scroll { overflow-x: auto; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { color: var(--dim); font-weight: 600; }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
+footer { margin: 72px 0 48px; padding-top: 24px; border-top: 1px solid var(--line);
+         color: var(--dim); font-size: 0.9rem; }
+footer a { color: var(--dim); }
+</style>
+</head>
+<body><div class="wrap">
+<nav aria-label="Main"><a href="index.html">FlameOne</a> &middot; <a href="support.html">Support</a> &middot; <a href="privacy.html">Privacy</a></nav>
+<header><h1>Support</h1>
+<p class="lede">FlameOne runs entirely on your device. Most questions are about what a
+number means, or about what a model does not cover &mdash; so this page answers those
+first.</p></header>
+
+<h2>Where the numbers come from</h2>
+
+<p>Thermodynamic and transport coefficients are read from NASA&rsquo;s CEA data files,
+bundled with the application and unmodified. The thermodynamic file holds 5,425 species
+records; the transport file holds fitted viscosity and conductivity curves for 66
+species. Both are released by NASA under the Apache License 2.0; the licence text and
+the NOTICE are readable inside the application under <strong>About &amp; Licences</strong>
+at the bottom of the sidebar.</p>
+
+<p>Equilibrium composition is solved by minimising Gibbs free energy using element
+potentials, and the results were checked case by case against NASA&rsquo;s own published
+CEA output.</p>
+
+<h2>Questions that come up</h2>
+
+<h3>Why is my flame temperature lower than the book&rsquo;s?</h3>
+<p>Check the model selector. <em>Frozen composition</em> holds the products fixed by
+stoichiometry; it is an upper bound. <em>Equilibrium composition</em> lets them
+dissociate, and dissociation absorbs heat. Both values are shown at once, and the
+difference between them is labelled. Also check the air model: textbook air is
+0.21 O&#8322; + 0.79 N&#8322;, while CEA standard dry air contains argon and carbon
+dioxide. Their molar masses differ by about 0.4%, which is enough to move every number
+that depends on the air&ndash;fuel ratio.</p>
+
+<h3>The species name is not found.</h3>
+<p>Names must match the data file exactly and are case sensitive: <code>CH4</code>,
+<code>H2</code>, <code>N2</code>. A few contain a comma &mdash; <code>C2H2,acetylene</code>
+is one name, not two.</p>
+
+<h3>A field will not accept what I typed.</h3>
+<p>Invalid input is refused rather than silently turned into zero or clamped into
+range: the reason appears beside the field and the previous value stays in use. A
+part-typed number such as <code>-</code>, <code>1.</code> or <code>1e</code> is allowed
+to sit there while you finish it.</p>
+
+<h3>Why does one screen have no default value?</h3>
+<p>The asymptotic laminar flame speed needs a pre-exponential factor, and there is no
+universal value for it &mdash; it depends on the mixture and on the overall reaction
+order assumed for that mixture. Any number offered as a default would be read as a
+constant of nature, so none is offered.</p>
+
+<h3>Two answers are shown. Which is the right one?</h3>
+<p>Both. Where a relation has two roots &mdash; strong and weak branches, ignition and
+extinction turning points &mdash; the application shows them together rather than
+choosing one for you. Which one applies is a property of your problem, not of the
+arithmetic, and the region each solution falls in is named beside it.</p>
+
+<h3>Can I get more digits out?</h3>
+<p>Yes. The screen shows four significant figures because that is what is readable;
+<strong>Export CSV</strong> writes 17, which reproduces the underlying double-precision
+value exactly. Exports also carry the conditions they were computed under, so the file
+is still interpretable months later.</p>
+
+<h2>What the application does not do</h2>
+
+<ul>
+<li>No detailed chemical kinetics and no reaction mechanisms. The reactor and ignition
+models use a single overall step, which is why a cold inlet gives an enormous ignition
+Damk&ouml;hler number: such a mixture really is inert at that temperature under a
+one-step model. Real mixtures ignite far earlier through chain branching.</li>
+<li>The equilibrium solver is gas phase only. Condensed species are not considered, so
+soot-forming rich mixtures are incomplete.</li>
+<li>Published flammability limits are measurements, not material constants. They depend
+on tube diameter, ignition energy, direction of propagation and ambient temperature.
+The application says so on that screen and does not average sources that disagree.</li>
+<li>No propulsion cycle analysis, and no transient simulation.</li>
+</ul>
+
+<h2>System requirements</h2>
+
+<table><tbody>
+<tr><th>Desktop</th><td>macOS 14 or later</td></tr>
+<tr><th>Tablet</th><td>iPadOS 17 or later</td></tr>
+<tr><th>Network</th><td>None. The application never connects to anything.</td></tr>
+<tr><th>Account</th><td>None.</td></tr>
+</tbody></table>
+
+<h2>Contact</h2>
+
+<p>Write to <a href="mailto:softwareone.support@gmail.com">softwareone.support@gmail.com</a>.
+It helps to say which module, what you entered, and what you expected &mdash; and if the
+answer looked wrong, to attach the exported CSV, since it carries the full conditions
+at full precision.</p>
+
+<footer><p><a href="privacy.html">Privacy</a> &middot;
+<a href="../index.html">All applications</a></p></footer>
+</div></body>
+</html>
