@@ -18,6 +18,16 @@ AppDevelopment/
   .nojekyll            ← 讓 GitHub Pages 原樣送檔，不跑 Jekyll
 ```
 
+## 兩支閘門
+
+```bash
+swiftc -O -o /tmp/generate-hub tools/generate-hub.swift && /tmp/generate-hub  # 產生首頁，順便確認頁面都在
+bash tools/checklinks.sh                                                      # 站內所有相對連結都指向存在的檔案
+```
+
+兩支都帶已知會失敗的樣本 —— 一個只會說「全部正常」的檢查，
+和一個根本沒掃到任何東西的檢查，輸出長得一樣。
+
 ## 加一個 App
 
 1. 建 `<slug>/` 資料夾，放進 `index.html`、`support.html`、`privacy.html` 三張。
