@@ -58,17 +58,19 @@ bash tools/checklinks.sh                                                      # 
 
 本站是新建的、獨立的一個站台，路徑上多一層 `/AppDevelopment/`。
 
-## 發布
+## 發布狀態
 
-尚未發布。要上線需要三步，**都是對外操作**：
+**已上線**（2026-09-14）。倉庫 `smallmade/AppDevelopment`（公開），
+GitHub Pages 由 `main` 分支的根目錄發布。
 
-1. 在 GitHub 建立倉庫 `smallmade/AppDevelopment`。
-2. 把本目錄推上去（本目錄已是一個本機 git 倉庫，只差 remote 與 push）。
-3. 在倉庫的 Settings → Pages 選擇從 `main` 分支的根目錄發布。
+實測回 200，且逐一核對過**實際送出的內容**而不只是狀態碼：
 
-完成後這兩個 URL 應該回 200：
+| URL | |
+|---|---|
+| `https://smallmade.github.io/AppDevelopment/` | 首頁，列出 FlameOne |
+| `https://smallmade.github.io/AppDevelopment/flameone/` | 產品頁 |
+| `https://smallmade.github.io/AppDevelopment/flameone/support.html` | **ASC Support URL** |
+| `https://smallmade.github.io/AppDevelopment/flameone/privacy.html` | **ASC Privacy Policy URL** |
 
-- `https://smallmade.github.io/AppDevelopment/flameone/support.html`
-- `https://smallmade.github.io/AppDevelopment/flameone/privacy.html`
-
-**上線後要實際打開這兩個 URL 確認回 200 再填進 ASC**，不要憑推論。
+改動之後要重新確認：**實際打開那兩個 URL**，不要憑推論。
+一個 404 的隱私政策是會被拒審的。
