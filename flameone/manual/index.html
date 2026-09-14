@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User manual &mdash; FlameOne</title>
+<style>
+:root {
+  --ink: #14171c; --dim: #5b626c; --line: #dfe3e8; --bg: #ffffff;
+  --panel: #f6f8fa; --accent: #b8440e; --accent-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6e9ee; --dim: #9aa1ab; --line: #2b3038; --bg: #16181c;
+    --panel: #1e2126; --accent: #ff8a5c; --accent-ink: #16181c;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+       font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header { padding: 64px 0 24px; }
+h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+.lede { font-size: 1.15rem; color: var(--dim); margin: 0 0 20px; max-width: 62ch; }
+h2 { font-size: 1.5rem; margin: 56px 0 12px; letter-spacing: -0.01em;
+     padding-top: 20px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.12rem; margin: 32px 0 8px; }
+h4 { font-size: 0.95rem; margin: 20px 0 6px; color: var(--dim);
+     text-transform: uppercase; letter-spacing: 0.06em; }
+p, li { max-width: 70ch; }
+a { color: var(--accent); }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
+.relation { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+            padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+            font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9rem; }
+table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.94rem; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line);
+         vertical-align: top; }
+th { color: var(--dim); font-weight: 600; }
+td.sym { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: nowrap; }
+td.unit { color: var(--dim); white-space: nowrap; }
+.limit { background: var(--panel); border-left: 3px solid var(--accent);
+         border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 14px 0; }
+.limit p { margin: 4px 0; }
+.toc { columns: 2; column-gap: 32px; margin: 20px 0 0; padding-left: 20px; }
+.toc li { max-width: none; }
+.meta { color: var(--dim); font-size: 0.9rem; }
+footer { margin: 72px 0 56px; padding-top: 24px; border-top: 1px solid var(--line);
+         color: var(--dim); font-size: 0.9rem; }
+footer a { color: var(--dim); }
+</style></head>
+<body><div class="wrap">
+<nav aria-label="Main"><a href="../index.html">FlameOne</a> &middot; <a href="../theory/index.html">Theory manual</a> &middot; <a href="../support.html">Support</a> &middot; <a href="../privacy.html">Privacy</a></nav>
+<header>
+<h1>User manual</h1>
+<p class="lede">What each screen asks for, what it gives back, and the conventions that
+apply everywhere in the application.</p>
+</header>
+
+<h2>How the application is arranged</h2>
+
+<p>One screen answers one question. The sidebar groups the nineteen screens into four
+families; picking one opens it directly, and the application starts on a usable
+stoichiometric methane&ndash;air case rather than an empty document. There is nothing to
+create and nothing to save.</p>
+
+<h2>Conventions that apply on every screen</h2>
+
+<h3>Typing a number</h3>
+<p>Entering a field selects what is already there, so typing replaces the value rather
+than appending to it. Part-typed numbers such as <code>-</code>, <code>1.</code> or
+<code>1e</code> are allowed to sit in the field while you finish them.</p>
+<p><strong>Invalid input is refused, not repaired.</strong> A value outside the domain is
+rejected with the reason beside the field and the previous value stays in use; it is never
+silently turned into zero or clamped into range. A calculation that quietly used a number
+you did not type is worse than one that refuses to run.</p>
+
+<h3>Digits</h3>
+<p>Screens show four significant figures, which is what stays readable. Counts &mdash; such
+as a solver's iteration count &mdash; are shown as whole numbers, because there is no such
+thing as half an iteration. <strong>Export writes seventeen significant figures</strong>,
+which reproduces the underlying double-precision value exactly, so a downstream calculation
+gets the same answer you saw.</p>
+
+<h3>Units</h3>
+<p>Everything is computed in SI internally; conversion happens only at the boundary, where
+you type and where the result is displayed. Each field states its own unit, and each result
+carries the unit it is reported in.</p>
+
+<h3>Where a relation has more than one solution</h3>
+<p>Both are shown. Strong and weak branches, ignition and extinction turning points, frozen
+and equilibrium flame temperature &mdash; the application does not choose one for you,
+because which one applies is a property of your problem and not of the arithmetic. Where a
+modelling choice has to be made, it is a visible control on the screen rather than an
+internal default.</p>
+
+<h3>What each screen tells you about itself</h3>
+<p>Every screen carries the relation it uses, under <em>Relation used</em>, and a standing
+note of what the model does not cover. Those notes are not dismissible: the limits of a
+model are part of its answer.</p>
+
+<h3>Exporting</h3>
+<p><strong>Export CSV</strong> in the toolbar writes the conditions, the results and the
+stated limitations as one file, at seventeen significant figures. Charts have their own
+<strong>PNG</strong> and <strong>PDF</strong> buttons: PNG at 2&times; for a report, PDF as
+vector for typesetting. Every export carries the conditions it was computed under and the
+version that produced it &mdash; a curve with no stated conditions cannot be checked by
+anyone, including the person who exported it.</p>
+
+<h3>Licences</h3>
+<p><strong>About &amp; Licences</strong> at the foot of the sidebar shows the version, what
+data is bundled, and the full licence and NOTICE for that data.</p>
+
+<h2>The screens</h2>
+<ul class="toc">
+<li><a href="#mod-01">Stoichiometry</a></li>
+<li><a href="#mod-02">Heating Value</a></li>
+<li><a href="#mod-04">Flame Temperature — Frozen</a></li>
+<li><a href="#mod-05">Equilibrium Composition</a></li>
+<li><a href="#mod-06">Flame Temperature — Equilibrium</a></li>
+<li><a href="#mod-07">Hugoniot Explorer</a></li>
+<li><a href="#mod-08">Chapman–Jouguet</a></li>
+<li><a href="#mod-09">von Neumann State</a></li>
+<li><a href="#mod-10">Laminar Flame Speed</a></li>
+<li><a href="#mod-11">Flame Scales</a></li>
+<li><a href="#mod-12">Flammability Limits</a></li>
+<li><a href="#mod-13">Thermal Explosion</a></li>
+<li><a href="#mod-14">Stirred Reactor</a></li>
+<li><a href="#mod-15">Flame Stretch</a></li>
+<li><a href="#mod-20">Quenching Distance</a></li>
+<li><a href="#mod-16">Mixture Fraction</a></li>
+<li><a href="#mod-17">Droplet Combustion</a></li>
+<li><a href="#mod-18">Turbulent Regimes</a></li>
+<li><a href="#mod-19">Transport Properties</a></li>
+</ul>
+<h2>Thermochemistry</h2>
+<h3 id="mod-01">Stoichiometry</h3>
+<p class="meta">MOD-01</p>
+<p>Equivalence ratio, air–fuel ratio and the soot threshold for a C–H–O–N fuel.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">z</td><td>Oxygen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">w</td><td>Nitrogen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Air model</td><td class="unit">textbook 21/79 or CEA standard dry</td></tr>
+<tr><td class="sym">A/F</td><td>Air–fuel ratio</td><td class="unit">kg/kg</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">φ</td><td>Equivalence ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Φ̃</td><td>Normalised equivalence ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">a</td><td>Stoichiometric oxygen</td><td class="unit">mol/mol fuel</td></tr>
+<tr><td class="sym">(A/F)st</td><td>Stoichiometric air–fuel ratio</td><td class="unit">kg/kg</td></tr>
+<tr><td class="sym">—</td><td>Stoichiometric air per fuel</td><td class="unit">mol/mol</td></tr>
+<tr><td class="sym">M</td><td>Fuel molar mass</td><td class="unit">g/mol</td></tr>
+<tr><td class="sym">φ</td><td>Soot threshold</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h3 id="mod-02">Heating Value</h3>
+<p class="meta">MOD-02</p>
+<p>Heat of reaction, and the lower and higher heating values of a fuel.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">—</td><td>Species name</td><td class="unit">must match the data file</td></tr>
+<tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">T</td><td>Temperature</td><td class="unit">K</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">LHV</td><td>Lower heating value</td><td class="unit">kJ/mol</td></tr>
+<tr><td class="sym">HHV</td><td>Higher heating value</td><td class="unit">kJ/mol</td></tr>
+<tr><td class="sym">LHV</td><td>Lower heating value, mass basis</td><td class="unit">MJ/kg</td></tr>
+<tr><td class="sym">ΔHf</td><td>Formation enthalpy at 298.15 K</td><td class="unit">kJ/mol</td></tr>
+<tr><td class="sym">cp</td><td>Heat capacity</td><td class="unit">J/(mol·K)</td></tr>
+</tbody></table>
+<h3 id="mod-04">Flame Temperature — Frozen</h3>
+<p class="meta">MOD-04</p>
+<p>Adiabatic flame temperature with a fixed product composition.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">—</td><td>Fuel species</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">φ</td><td>Equivalence ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">T₁</td><td>Initial temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">—</td><td>Air model</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Rich product rule</td><td class="unit">when φ &gt; 1</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Tad</td><td>Frozen flame temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Tad</td><td>Equilibrium flame temperature, shown alongside</td><td class="unit">K</td></tr>
+<tr><td class="sym">ΔT</td><td>Dissociation penalty</td><td class="unit">K</td></tr>
+<tr><td class="sym">n</td><td>Product moles per mole fuel</td><td class="unit">mol</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Product composition does not dissociate; the temperature is therefore an upper bound.</p>
+</div>
+<h3 id="mod-05">Equilibrium Composition</h3>
+<p class="meta">MOD-05</p>
+<p>Equilibrium mole fractions at a given temperature and pressure.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">C</td><td>Carbon</td><td class="unit">mol</td></tr>
+<tr><td class="sym">H</td><td>Hydrogen</td><td class="unit">mol</td></tr>
+<tr><td class="sym">O</td><td>Oxygen</td><td class="unit">mol</td></tr>
+<tr><td class="sym">N</td><td>Nitrogen</td><td class="unit">mol</td></tr>
+<tr><td class="sym">T</td><td>Temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">p</td><td>Pressure</td><td class="unit">atm</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Xj</td><td>Mole fraction of each product species</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Iterations</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Largest element residual</td><td class="unit">mol</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Gas phase only. Condensed species are not considered, so soot-forming rich mixtures are incomplete.</p>
+</div>
+<h3 id="mod-06">Flame Temperature — Equilibrium</h3>
+<p class="meta">MOD-06</p>
+<p>Adiabatic flame temperature with a dissociating product composition.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">—</td><td>Fuel species</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">φ</td><td>Equivalence ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">T₁</td><td>Initial temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">p</td><td>Pressure</td><td class="unit">atm</td></tr>
+<tr><td class="sym">—</td><td>Air model</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Product species considered</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Tad</td><td>Equilibrium flame temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Xj</td><td>Product composition</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">n</td><td>Product moles per mole fuel</td><td class="unit">mol</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Gas phase only.</p>
+<p>The set of product species is a choice: different sets give different answers.</p>
+</div>
+<h2>Combustion Waves</h2>
+<h3 id="mod-07">Hugoniot Explorer</h3>
+<p class="meta">MOD-07</p>
+<p>Rayleigh line, Hugoniot curve, and which of the seven regions a wave falls in.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">P₁</td><td>Unburned pressure</td><td class="unit">atm</td></tr>
+<tr><td class="sym">T₁</td><td>Unburned temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">R</td><td>Gas constant</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">q</td><td>Heat release</td><td class="unit">MJ/kg</td></tr>
+<tr><td class="sym">γ₁</td><td>Unburned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">γ₂</td><td>Burned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ma₁</td><td>Upstream Mach number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">λ</td><td>Reaction progress</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">x</td><td>Volume ratio, strong and weak</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Pressure ratio, strong and weak</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ma₂</td><td>Downstream Mach number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">P₂</td><td>Downstream pressure</td><td class="unit">kPa</td></tr>
+<tr><td class="sym">T₂</td><td>Downstream temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">—</td><td>Which of the seven regions each solution falls in</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h3 id="mod-08">Chapman–Jouguet</h3>
+<p class="meta">MOD-08</p>
+<p>The tangency solution: detonation and deflagration wave speeds and end states.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">P₁</td><td>Unburned pressure</td><td class="unit">atm</td></tr>
+<tr><td class="sym">T₁</td><td>Unburned temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">R</td><td>Gas constant</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">q</td><td>Heat release</td><td class="unit">MJ/kg</td></tr>
+<tr><td class="sym">γ₁</td><td>Unburned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">γ₂</td><td>Burned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">λ</td><td>Reaction progress</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Ma₁</td><td>CJ detonation Mach number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">D</td><td>CJ detonation wave speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">y</td><td>CJ detonation pressure ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ma₁</td><td>CJ deflagration Mach number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>CJ deflagration wave speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">—</td><td>CJ deflagration pressure ratio</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Frozen composition: the heat release is an input, not derived from equilibrium.</p>
+</div>
+<h3 id="mod-09">von Neumann State</h3>
+<p class="meta">MOD-09</p>
+<p>The state behind the leading shock, overdrive factor and induction length.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">P₁</td><td>Unburned pressure</td><td class="unit">atm</td></tr>
+<tr><td class="sym">T₁</td><td>Unburned temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">γ₁</td><td>Unburned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ma₁</td><td>Upstream Mach number</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">pN/p₁</td><td>Pressure ratio across the shock</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">TN/T₁</td><td>Temperature ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">MaN</td><td>Mach number behind the shock</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">TN</td><td>Temperature behind the shock</td><td class="unit">K</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>The ignition delay has no default value and must be supplied.</p>
+</div>
+<h2>Laminar Flames &amp; Limits</h2>
+<h3 id="mod-10">Laminar Flame Speed</h3>
+<p class="meta">MOD-10</p>
+<p>Asymptotic solution, and scaling a measured flame speed to other conditions.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Z′</td><td>Pre-exponential factor</td><td class="unit">kg/(m³·s), asymptotic route</td></tr>
+<tr><td class="sym">E</td><td>Activation energy</td><td class="unit">J/mol</td></tr>
+<tr><td class="sym">a₀</td><td>Initial reactant density</td><td class="unit">kg/m³</td></tr>
+<tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
+<tr><td class="sym">ρ₀</td><td>Unburned density</td><td class="unit">kg/m³</td></tr>
+<tr><td class="sym">cp</td><td>Heat capacity</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">Tf</td><td>Flame temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">T₀</td><td>Unburned temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Le</td><td>Lewis number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">S_L</td><td>Measured flame speed</td><td class="unit">m/s, scaling route</td></tr>
+<tr><td class="sym">n</td><td>Overall reaction order</td><td class="unit">scaling route</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">S_L</td><td>Flame speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">f°</td><td>Mass burning flux</td><td class="unit">kg/(m²·s)</td></tr>
+<tr><td class="sym">—</td><td>Flux corrected for the Lewis number</td><td class="unit">kg/(m²·s)</td></tr>
+<tr><td class="sym">—</td><td>Ratio to the reference</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Pressure exponent for the speed and for the mass flux</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>The pre-exponential factor and the overall reaction order have no default values: both depend on the mixture.</p>
+</div>
+<h3 id="mod-11">Flame Scales</h3>
+<p class="meta">MOD-11</p>
+<p>Zeldovich and Lewis numbers, preheat and reaction zone thickness, mass burning flux.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">E</td><td>Activation energy</td><td class="unit">J/mol</td></tr>
+<tr><td class="sym">T_b</td><td>Flame temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">T_u</td><td>Unburned temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">S_L</td><td>Flame speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">ρ_u</td><td>Unburned density</td><td class="unit">kg/m³</td></tr>
+<tr><td class="sym">α</td><td>Thermal diffusivity</td><td class="unit">m²/s</td></tr>
+<tr><td class="sym">D</td><td>Mass diffusivity</td><td class="unit">m²/s</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Ze</td><td>Zeldovich number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Le</td><td>Lewis number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ar</td><td>Arrhenius number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">σ</td><td>Expansion ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">ℓ_D</td><td>Preheat zone thickness</td><td class="unit">mm</td></tr>
+<tr><td class="sym">ℓ_R</td><td>Reaction zone thickness</td><td class="unit">μm</td></tr>
+<tr><td class="sym">f°</td><td>Mass burning flux</td><td class="unit">kg/(m²·s)</td></tr>
+</tbody></table>
+<h3 id="mod-12">Flammability Limits</h3>
+<p class="meta">MOD-12</p>
+<p>Le Chatelier mixing rule and the Burgess-Wheeler limit temperature law.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">(LFL)A</td><td>Lean limit of fuel A</td><td class="unit">vol %</td></tr>
+<tr><td class="sym">(LFL)B</td><td>Lean limit of fuel B</td><td class="unit">vol %</td></tr>
+<tr><td class="sym">XA</td><td>Mole fraction of A among the fuels</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">ΔHc</td><td>Heat of combustion</td><td class="unit">kcal/mol</td></tr>
+<tr><td class="sym">C</td><td>Burgess–Wheeler constant</td><td class="unit">kcal/mol</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">(LFL)mix</td><td>Mixture lean limit</td><td class="unit">vol %</td></tr>
+<tr><td class="sym">(LFL)</td><td>Predicted lean limit</td><td class="unit">vol %</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Published limits are measurements, not material constants: two sources disagree on methane by 0.7%.</p>
+</div>
+<h3 id="mod-13">Thermal Explosion</h3>
+<p class="meta">MOD-13</p>
+<p>Semenov criterion, critical temperature rise, and Frank-Kamenetskii critical size.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">T₀</td><td>Ambient temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">E</td><td>Activation energy</td><td class="unit">J/mol</td></tr>
+<tr><td class="sym">—</td><td>Vessel geometry</td><td class="unit">sphere, cylinder or slab</td></tr>
+<tr><td class="sym">Q</td><td>Heat of reaction</td><td class="unit">J/kg</td></tr>
+<tr><td class="sym">ρ</td><td>Density</td><td class="unit">kg/m³</td></tr>
+<tr><td class="sym">A</td><td>Pre-exponential factor</td><td class="unit">1/s</td></tr>
+<tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">ΔTc</td><td>Critical temperature rise</td><td class="unit">K</td></tr>
+<tr><td class="sym">Tc</td><td>Critical temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">—</td><td>Reaction rate at criticality</td><td class="unit">× ambient rate</td></tr>
+<tr><td class="sym">—</td><td>Critical size</td><td class="unit">mm</td></tr>
+</tbody></table>
+<h3 id="mod-14">Stirred Reactor</h3>
+<p class="meta">MOD-14</p>
+<p>The S-curve: ignition and extinction turning points of a well-stirred reactor.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">T_in</td><td>Inlet temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">T_ad</td><td>Adiabatic temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">E</td><td>Activation energy</td><td class="unit">J/mol</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">T_ign</td><td>Ignition temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Da_ign</td><td>Damköhler number at ignition</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">T_ext</td><td>Extinction temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Da_ext</td><td>Damköhler number at extinction</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Solved with temperature as the independent variable: the turning points have a vertical tangent in the other direction.</p>
+</div>
+<h3 id="mod-15">Flame Stretch</h3>
+<p class="meta">MOD-15</p>
+<p>Markstein length, stretched flame speed, and the stretch rate at extinction.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">s°</td><td>Unstretched flame speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">L</td><td>Markstein length</td><td class="unit">m</td></tr>
+<tr><td class="sym">κ</td><td>Stretch rate</td><td class="unit">1/s</td></tr>
+<tr><td class="sym">δ</td><td>Flame thickness</td><td class="unit">m</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">s</td><td>Stretched flame speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">Ka</td><td>Karlovitz number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">κ_ext</td><td>Extinction stretch rate</td><td class="unit">1/s</td></tr>
+<tr><td class="sym">—</td><td>Speed ratio at extinction</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h3 id="mod-20">Quenching Distance</h3>
+<p class="meta">MOD-20</p>
+<p>Quenching distance, minimum ignition energy, and their pressure scaling.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">U</td><td>Burning velocity</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">d</td><td>Quenching distance</td><td class="unit">mm at 1 atm</td></tr>
+<tr><td class="sym">α</td><td>Thermal diffusivity</td><td class="unit">m²/s</td></tr>
+<tr><td class="sym">p</td><td>Target pressure</td><td class="unit">atm</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">U·d</td><td>Velocity–distance product</td><td class="unit">cm²/s</td></tr>
+<tr><td class="sym">Pe</td><td>Quenching Peclet number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">d</td><td>Distance at the target pressure</td><td class="unit">mm</td></tr>
+<tr><td class="sym">—</td><td>Equivalent parallel-plate spacing</td><td class="unit">mm</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>Quenching distance depends on the apparatus geometry. It is not a material constant.</p>
+<p>In the extrapolated data the distance was read off a curve from the ignition energy: the two columns are not independent.</p>
+</div>
+<h2>Non-premixed &amp; Turbulent</h2>
+<h3 id="mod-16">Mixture Fraction</h3>
+<p class="meta">MOD-16</p>
+<p>Mixture fraction, its stoichiometric value, and the Burke-Schumann flame structure.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">z</td><td>Oxygen atoms</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Y_F,1</td><td>Fuel in the fuel stream</td><td class="unit">mass fraction</td></tr>
+<tr><td class="sym">Y_O,2</td><td>Oxygen in the oxidiser</td><td class="unit">mass fraction</td></tr>
+<tr><td class="sym">Z</td><td>Mixture fraction</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Z_st</td><td>Stoichiometric mixture fraction</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">ν</td><td>Stoichiometric mass ratio</td><td class="unit">kg O₂/kg fuel</td></tr>
+<tr><td class="sym">φ</td><td>Equivalence ratio at this Z</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Y_F</td><td>Fuel mass fraction</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Y_O</td><td>Oxygen mass fraction</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h3 id="mod-17">Droplet Combustion</h3>
+<p class="meta">MOD-17</p>
+<p>Transfer numbers, the square law rate constant, droplet lifetime and flame standoff.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">—</td><td>Mode</td><td class="unit">evaporation or combustion</td></tr>
+<tr><td class="sym">T∞</td><td>Ambient temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Ts</td><td>Surface temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">cp</td><td>Specific heat</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">qv</td><td>Latent heat</td><td class="unit">J/kg</td></tr>
+<tr><td class="sym">qc</td><td>Heat of combustion</td><td class="unit">J/kg</td></tr>
+<tr><td class="sym">Y_O∞</td><td>Ambient oxidiser</td><td class="unit">mass fraction</td></tr>
+<tr><td class="sym">ν</td><td>Stoichiometric oxidiser</td><td class="unit">kg/kg</td></tr>
+<tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
+<tr><td class="sym">ρℓ</td><td>Liquid density</td><td class="unit">kg/m³</td></tr>
+<tr><td class="sym">r₀</td><td>Initial radius</td><td class="unit">μm</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">B</td><td>Transfer number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">K</td><td>Rate constant on radius squared</td><td class="unit">cm²/s</td></tr>
+<tr><td class="sym">K</td><td>Rate constant on diameter squared</td><td class="unit">cm²/s</td></tr>
+<tr><td class="sym">τ</td><td>Droplet lifetime</td><td class="unit">ms</td></tr>
+<tr><td class="sym">—</td><td>Flame standoff ratio</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>The surface temperature is taken as the boiling point. The mass-transfer form of B diverges under that simplification.</p>
+<p>The rate constant here is defined on the radius squared: the diameter-based constant is four times larger.</p>
+</div>
+<h3 id="mod-18">Turbulent Regimes</h3>
+<p class="meta">MOD-18</p>
+<p>Where a turbulent flame falls on the regime diagram, and the four boundaries.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">s_L</td><td>Laminar flame speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">D</td><td>Mass diffusivity</td><td class="unit">m²/s</td></tr>
+<tr><td class="sym">v′</td><td>Turbulence intensity</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">ℓ</td><td>Integral length scale</td><td class="unit">m</td></tr>
+<tr><td class="sym">δ</td><td>Inner layer fraction</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">Re</td><td>Turbulent Reynolds number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Da</td><td>Damköhler number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ka</td><td>Karlovitz number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Ka_δ</td><td>Inner layer Karlovitz number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">ℓ_F</td><td>Flame thickness</td><td class="unit">mm</td></tr>
+<tr><td class="sym">ℓ_G</td><td>Gibson scale</td><td class="unit">mm</td></tr>
+<tr><td class="sym">—</td><td>Broken-zone boundary Karlovitz number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Regime</td><td class="unit">&mdash;</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>The inner layer fraction defaults to a methane-air estimate. It is editable because it moves a regime boundary.</p>
+</div>
+<h3 id="mod-19">Transport Properties</h3>
+<p class="meta">MOD-19</p>
+<p>Viscosity and thermal conductivity from the official fits, plus the kinetic-theory route.</p>
+<h4>You provide</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">—</td><td>Species name</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">T</td><td>Temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">cp</td><td>Specific heat</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">ρ</td><td>Density</td><td class="unit">kg/m³</td></tr>
+</tbody></table>
+<h4>It reports</h4>
+<table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+<tbody>
+<tr><td class="sym">η</td><td>Viscosity</td><td class="unit">Pa·s</td></tr>
+<tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
+<tr><td class="sym">Pr</td><td>Prandtl number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">α</td><td>Thermal diffusivity</td><td class="unit">m²/s</td></tr>
+<tr><td class="sym">ν</td><td>Kinematic viscosity</td><td class="unit">m²/s</td></tr>
+</tbody></table>
+<div class="limit"><h4>Not covered</h4>
+<p>The kinetic-theory route needs a collision integral, which has no default value in this app.</p>
+</div>
+
+<footer>
+<p><a href="../index.html">FlameOne</a> &middot; <a href="../support.html">Support</a> &middot;
+<a href="../privacy.html">Privacy</a> &middot; <a href="../../index.html">All applications</a></p>
+<p>Generated from the application's own module catalogue. Not written by hand, and therefore
+not able to drift from what the application does.</p>
+</footer>
+</div></body>
+</html>

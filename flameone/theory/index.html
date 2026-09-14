@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theory manual &mdash; FlameOne</title>
+<style>
+:root {
+  --ink: #14171c; --dim: #5b626c; --line: #dfe3e8; --bg: #ffffff;
+  --panel: #f6f8fa; --accent: #b8440e; --accent-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6e9ee; --dim: #9aa1ab; --line: #2b3038; --bg: #16181c;
+    --panel: #1e2126; --accent: #ff8a5c; --accent-ink: #16181c;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+       font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header { padding: 64px 0 24px; }
+h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+.lede { font-size: 1.15rem; color: var(--dim); margin: 0 0 20px; max-width: 62ch; }
+h2 { font-size: 1.5rem; margin: 56px 0 12px; letter-spacing: -0.01em;
+     padding-top: 20px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.12rem; margin: 32px 0 8px; }
+h4 { font-size: 0.95rem; margin: 20px 0 6px; color: var(--dim);
+     text-transform: uppercase; letter-spacing: 0.06em; }
+p, li { max-width: 70ch; }
+a { color: var(--accent); }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
+.relation { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+            padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+            font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9rem; }
+table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.94rem; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line);
+         vertical-align: top; }
+th { color: var(--dim); font-weight: 600; }
+td.sym { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: nowrap; }
+td.unit { color: var(--dim); white-space: nowrap; }
+.limit { background: var(--panel); border-left: 3px solid var(--accent);
+         border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 14px 0; }
+.limit p { margin: 4px 0; }
+.toc { columns: 2; column-gap: 32px; margin: 20px 0 0; padding-left: 20px; }
+.toc li { max-width: none; }
+.meta { color: var(--dim); font-size: 0.9rem; }
+footer { margin: 72px 0 56px; padding-top: 24px; border-top: 1px solid var(--line);
+         color: var(--dim); font-size: 0.9rem; }
+footer a { color: var(--dim); }
+</style></head>
+<body><div class="wrap">
+<nav aria-label="Main"><a href="../index.html">FlameOne</a> &middot; <a href="../manual/index.html">User manual</a> &middot; <a href="../support.html">Support</a> &middot; <a href="../privacy.html">Privacy</a></nav>
+<header>
+<h1>Theory manual</h1>
+<p class="lede">For every screen: the relation it evaluates, what that relation assumes,
+how it is solved, where it stops applying, and how accurate the answer is known to be.</p>
+</header>
+
+<h2>Why this document exists</h2>
+
+<p>Anyone can get a formula evaluated. The question that matters is whether the number
+coming out is the one you think it is &mdash; and that depends on assumptions the formula
+does not state, on which root of a multi-valued relation was taken, and on where the model
+stops being true. This document answers those questions for each screen, so the result can
+be checked rather than trusted.</p>
+
+<p>It is generated from the application's own module catalogue. It is not written
+separately and cannot describe behaviour the application does not have.</p>
+
+<h2>Where the data comes from</h2>
+
+<p>Thermodynamic and transport coefficients are read from NASA's CEA data files, bundled
+with the application and unmodified: 5,425 species records, and fitted viscosity and
+conductivity curves for 66 species. Both files are released by NASA under the Apache
+License 2.0, and the licence and NOTICE are readable inside the application.</p>
+
+<p>The thermodynamic evaluator reproduces each species' own tabulated formation enthalpy at
+298.15&nbsp;K &mdash; checked for 245 gas-phase species, using the data file itself as the
+expected value, so no second source is needed for that particular claim. Equilibrium
+composition was checked case by case against NASA's own published CEA output; the largest
+deviation is in OH and is explained quantitatively by a known revision to its formation
+enthalpy rather than absorbed into a loose tolerance.</p>
+
+<h2>Two data defects worth knowing about</h2>
+
+<p>Eleven records in the thermodynamic file have their interval bounds reversed, all of
+them condensed phases. The parser does <strong>not</strong> silently swap them: those
+intervals simply never match, and the evaluator returns no value rather than a plausible
+wrong one.</p>
+
+<p>The transport file mixes two kinds of record: 66 pure species and 41 binary interaction
+pairs, 107 in all. Treating a pair as the pure property of its first member returns a
+quietly wrong number. They are indexed separately, so a lookup can only ever return a pure
+species.</p>
+
+<h2>The screens</h2>
+<ul class="toc">
+<li><a href="#mod-01">Stoichiometry</a></li>
+<li><a href="#mod-02">Heating Value</a></li>
+<li><a href="#mod-04">Flame Temperature — Frozen</a></li>
+<li><a href="#mod-05">Equilibrium Composition</a></li>
+<li><a href="#mod-06">Flame Temperature — Equilibrium</a></li>
+<li><a href="#mod-07">Hugoniot Explorer</a></li>
+<li><a href="#mod-08">Chapman–Jouguet</a></li>
+<li><a href="#mod-09">von Neumann State</a></li>
+<li><a href="#mod-10">Laminar Flame Speed</a></li>
+<li><a href="#mod-11">Flame Scales</a></li>
+<li><a href="#mod-12">Flammability Limits</a></li>
+<li><a href="#mod-13">Thermal Explosion</a></li>
+<li><a href="#mod-14">Stirred Reactor</a></li>
+<li><a href="#mod-15">Flame Stretch</a></li>
+<li><a href="#mod-20">Quenching Distance</a></li>
+<li><a href="#mod-16">Mixture Fraction</a></li>
+<li><a href="#mod-17">Droplet Combustion</a></li>
+<li><a href="#mod-18">Turbulent Regimes</a></li>
+<li><a href="#mod-19">Transport Properties</a></li>
+</ul>
+<h2>Thermochemistry</h2>
+<h3 id="mod-01">Stoichiometry</h3>
+<p class="meta">MOD-01</p>
+<p>Equivalence ratio, air–fuel ratio and the soot threshold for a C–H–O–N fuel.</p>
+<h4>Relation</h4>
+<div class="relation">a = x + y/4 - z/2,  φ = (A/F)ₛₜ / (A/F)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Stoichiometric oxygen is defined by complete combustion to CO₂ and H₂O.</li>
+<li>Fuel-bound oxygen displaces external oxidiser at z/2 per mole of fuel.</li>
+<li>Air is an ideal mixture of the composition you select.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form. No iteration.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>C–H–O–N fuels.</li>
+<li>The fuel must need some external oxidiser: with enough fuel-bound oxygen the equivalence ratio is undefined, and the screen says so rather than returning a number.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>The air composition is an explicit choice, not an internal constant. Textbook air (0.21 O₂ + 0.79 N₂) reproduces figures printed in textbooks; CEA standard dry air contains argon and carbon dioxide and reproduces NASA CEA. Their molar masses differ by about 0.4%, which moves every quantity that depends on the air–fuel ratio.</p>
+<h4>Accuracy and conventions</h4>
+<p>Exact to floating point. The soot threshold is a purely stoichiometric estimate — the equivalence ratio at which there is no longer enough oxygen to take all the carbon to CO — not a measured sooting limit.</p>
+<h3 id="mod-02">Heating Value</h3>
+<p class="meta">MOD-02</p>
+<p>Heat of reaction, and the lower and higher heating values of a fuel.</p>
+<h4>Relation</h4>
+<div class="relation">Δ H(T) = Σ_prod νⱼ hⱼ(T) - Σ_reac νⱼ hⱼ(T)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Complete combustion to CO₂ and H₂O.</li>
+<li>Reactants and products are both at the stated temperature.</li>
+<li>The lower value takes the product water as vapour, the higher value as liquid.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Enthalpy differences evaluated from the NASA nine-coefficient polynomials in the bundled CEA thermodynamic file.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The species must exist in the data file, spelled exactly as the file spells it.</li>
+<li>The temperature must fall inside one of that species' fitted intervals. Outside them the screen reports no value rather than extrapolating.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>The water phase is what separates the lower value from the higher one. Both are shown together.</p>
+<h4>Accuracy and conventions</h4>
+<p>The evaluator reproduces each species' own tabulated formation enthalpy at 298.15 K; this was checked for 245 gas-phase species, using the data file itself as the expected value so no second source is needed.</p>
+<h3 id="mod-04">Flame Temperature — Frozen</h3>
+<p class="meta">MOD-04</p>
+<p>Adiabatic flame temperature with a fixed product composition.</p>
+<h4>Relation</h4>
+<div class="relation">Σ_prod nⱼ hⱼ(T_ad) = Σ_reac nⱼ hⱼ(T₁)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Adiabatic and at constant pressure.</li>
+<li>Products are fixed by stoichiometry and do not dissociate.</li>
+<li>Ideal gas throughout.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Energy balance solved for temperature by bracketed root finding on the product enthalpy, using the same NASA polynomials as the heating value.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Below stoichiometric the product assignment is unique; above it, it is not — see the branching note.</li>
+<li>The fuel species must be in the data file.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Above stoichiometric there is no unique way to assign the remaining carbon in a frozen model — that is precisely the question an equilibrium calculation answers. The rule is therefore a visible choice on the screen, not a silent default.</p>
+<h4>Accuracy and conventions</h4>
+<p>An upper bound by construction. The equilibrium value is computed alongside and the gap between them is reported as what it is: the heat absorbed by dissociation.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Product composition does not dissociate; the temperature is therefore an upper bound.</p>
+</div>
+<h3 id="mod-05">Equilibrium Composition</h3>
+<p class="meta">MOD-05</p>
+<p>Equilibrium mole fractions at a given temperature and pressure.</p>
+<h4>Relation</h4>
+<div class="relation">min G = Σⱼ nⱼ μⱼ  subject to  Σⱼ aᵢⱼ nⱼ = bᵢ°</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Ideal gas mixture.</li>
+<li>Gas phase only — no condensed species.</li>
+<li>The product species set is fixed: CO₂, H₂O, N₂, O₂, CO, H₂, OH, H, O, NO.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Gibbs free energy minimisation by the element-potential (Lagrange multiplier) method, Newton iteration on the corrections. The convergence test is applied inside the loop, not as a check afterwards — applying it afterwards accepts an iterate that was never tested.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Every element present in the inventory must be carried by at least one species in the set.</li>
+<li>Temperature and pressure must lie where all species have fitted data.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>None. The constrained minimum is unique.</p>
+<h4>Accuracy and conventions</h4>
+<p>Element conservation is required to (b°)max × 1e-6, which is the reference criterion rather than a stricter per-element one. The achieved residual is reported on the screen, so the trustworthiness of the answer is visible rather than assumed.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Gas phase only. Condensed species are not considered, so soot-forming rich mixtures are incomplete.</p>
+</div>
+<h3 id="mod-06">Flame Temperature — Equilibrium</h3>
+<p class="meta">MOD-06</p>
+<p>Adiabatic flame temperature with a dissociating product composition.</p>
+<h4>Relation</h4>
+<div class="relation">h_prod(T_ad, equilibrium) = h_reac(T₁)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Adiabatic and at constant pressure.</li>
+<li>Products are in chemical equilibrium over the chosen species set.</li>
+<li>Gas phase only.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>An outer root find on temperature with a full Gibbs minimisation at every trial temperature.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The species set must cover every element the reactants bring in. Selecting CEA standard dry air adds argon, so argon must be in the set — otherwise the solver correctly refuses and the user only sees a failure.</li>
+<li>Pressure matters here and is enabled; in the frozen model it is disabled because that model has no pressure dependence.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>None in the solution itself. The product species set, however, is a choice, and the screen names the species in use: a different set is a different question, not a more accurate answer to the same one.</p>
+<h4>Accuracy and conventions</h4>
+<p>Checked case by case against NASA's own published CEA output. The largest deviation is in OH and is explained quantitatively by a known revision to its formation enthalpy — it is accounted for, not absorbed into a loose tolerance.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Gas phase only.</p>
+<p>The set of product species is a choice: different sets give different answers.</p>
+</div>
+<h2>Combustion Waves</h2>
+<h3 id="mod-07">Hugoniot Explorer</h3>
+<p class="meta">MOD-07</p>
+<p>Rayleigh line, Hugoniot curve, and which of the seven regions a wave falls in.</p>
+<h4>Relation</h4>
+<div class="relation">y_R = 1 + γ₁ Ma₁² (1-x),  y_H = (2λ q' - x + a)/(bx - 1)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>One-dimensional, steady wave.</li>
+<li>Ideal gas on each side, with the specific heat ratio allowed to differ across the wave.</li>
+<li>Heat release added instantaneously at the wave.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>The intersection of the Rayleigh line with the Hugoniot curve reduces to a quadratic in the volume ratio. The discriminant decides between two solutions, tangency, and none — and none is a physical answer, not an error.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Ma₁ = 1 is excluded: the model does not apply there.</li>
+<li>Two specific heat ratios is the general case; one value is the special case where they happen to be equal.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Two roots, strong and weak. Both are shown together, each labelled with the region it falls in. A silently chosen root is the easiest way for a user to walk away with the wrong answer and not know it.</p>
+<h4>Accuracy and conventions</h4>
+<p>Closed form. The curve drawn on the chart and the axis bound are computed from the same number, so the curve cannot overflow the plot area.</p>
+<h3 id="mod-08">Chapman–Jouguet</h3>
+<p class="meta">MOD-08</p>
+<p>The tangency solution: detonation and deflagration wave speeds and end states.</p>
+<h4>Relation</h4>
+<div class="relation">(b-1)² g² + [2(b+1)² - 4bK]g + (b+1)² = 0,  g = γ₁ Ma₁²</div>
+<h4>Assumptions</h4>
+<ul>
+<li>As the Hugoniot module: one-dimensional steady wave, ideal gas each side.</li>
+<li>The Chapman–Jouguet condition is tangency of the Rayleigh line to the Hugoniot curve.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>The tangency condition reduces to a quadratic in γ₁Ma₁². Its two roots are the detonation and deflagration branches.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Positive heat release.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Two tangency points: the upper (detonation) and the lower (deflagration). Both are reported with their wave speeds and pressure ratios.</p>
+<h4>Accuracy and conventions</h4>
+<p>Closed form. The heat release is an input here rather than being derived from an equilibrium calculation, which is the main modelling limitation of this module.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Frozen composition: the heat release is an input, not derived from equilibrium.</p>
+</div>
+<h3 id="mod-09">von Neumann State</h3>
+<p class="meta">MOD-09</p>
+<p>The state behind the leading shock, overdrive factor and induction length.</p>
+<h4>Relation</h4>
+<div class="relation">(p_N)/(p₁) = (2γ₁ Ma₁² - (γ₁ - 1))/(γ₁ + 1)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>The leading shock is a frozen, non-reacting normal shock.</li>
+<li>Ideal gas with the unburned specific heat ratio.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Normal-shock relations, closed form.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Supersonic inflow. Below Ma₁ = 1 there is no leading shock and the screen says so.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>Closed form. This is the state the gas is compressed to before it releases heat along the Rayleigh line down to the Chapman–Jouguet point.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>The ignition delay has no default value and must be supplied.</p>
+</div>
+<h2>Laminar Flames &amp; Limits</h2>
+<h3 id="mod-10">Laminar Flame Speed</h3>
+<p class="meta">MOD-10</p>
+<p>Asymptotic solution, and scaling a measured flame speed to other conditions.</p>
+<h4>Relation</h4>
+<div class="relation">S_L ∝ p^((n-2)/2)  e^(-T_a/(2T_f))</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Large activation energy asymptotics with a single overall reaction.</li>
+<li>For the scaling route: the same overall reaction order applies at both conditions.</li>
+<li>The Lewis correction acts on the mass burning flux, not on the speed — the flux is the intrinsic quantity.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form on both routes. The exponential and the Zeldovich factor are both evaluated at the flame temperature.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The asymptotic route needs a pre-exponential factor fitted to your mixture; there is no universal value.</li>
+<li>The scaling route is only valid over the range the reference measurement covers.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>The two routes are an explicit choice because they answer different questions. One computes the speed from kinetic parameters; the other moves a measurement to new conditions and needs no kinetics at all.</p>
+<h4>Accuracy and conventions</h4>
+<p>No default is offered for Z′ or for n, on purpose: any number placed there would be read as a constant of nature. At exactly n = 2 the pressure dependence vanishes, which is why 2 is not offered as a convenient default.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>The pre-exponential factor and the overall reaction order have no default values: both depend on the mixture.</p>
+</div>
+<h3 id="mod-11">Flame Scales</h3>
+<p class="meta">MOD-11</p>
+<p>Zeldovich and Lewis numbers, preheat and reaction zone thickness, mass burning flux.</p>
+<h4>Relation</h4>
+<div class="relation">Ze = (Eₐ(T_b - Tᵤ))/(R° T_b²),  Le = α/D</div>
+<h4>Assumptions</h4>
+<ul>
+<li>One-step overall chemistry.</li>
+<li>The preheat thickness is the diffusive scale α/S_L; the reaction zone is thinner than it by a factor of the Zeldovich number.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The asymptotic separation of the two zones is only meaningful when the Zeldovich number is large — of order ten is typical.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>The Lewis number is defined here as α/D. Sources that use the reciprocal must be converted at the boundary; the same number means the opposite thing under the other convention.</p>
+<h3 id="mod-12">Flammability Limits</h3>
+<p class="meta">MOD-12</p>
+<p>Le Chatelier mixing rule and the Burgess-Wheeler limit temperature law.</p>
+<h4>Relation</h4>
+<div class="relation">(LFL)ₘᵢₓ = [Σᵢ Xᵢ/(LFL)ᵢ]⁻¹</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Le Chatelier's rule assumes each fuel contributes independently at its own limit.</li>
+<li>The mole fraction is taken among the fuels, not in the whole mixture.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Mixtures of fuels whose limits were measured under comparable conditions.</li>
+<li>Limits depend on tube diameter, ignition energy, direction of propagation and ambient temperature. They are apparatus-dependent measurements.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>The constant printed in one source (920) cannot be reproduced from the inputs printed beside it (5.0 × 192 = 960). The relation is used; that constant is not. Where two sources transcribing the same underlying report disagree — methane's rich limit is printed as 14.9 in one and 15.0 in the other — both are kept rather than averaged.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Published limits are measurements, not material constants: two sources disagree on methane by 0.7%.</p>
+</div>
+<h3 id="mod-13">Thermal Explosion</h3>
+<p class="meta">MOD-13</p>
+<p>Semenov criterion, critical temperature rise, and Frank-Kamenetskii critical size.</p>
+<h4>Relation</h4>
+<div class="relation">Tᵢ - T₀ = R°T₀²/E,  θ_ig = 1</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Semenov: the interior is at a uniform temperature and loses heat through a surface coefficient.</li>
+<li>Frank-Kamenetskii: conduction-limited, with the exponential approximation to the Arrhenius term.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form for both criteria.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The Semenov picture needs a small Biot number; the Frank-Kamenetskii picture needs a large one.</li>
+<li>The three vessel geometries differ by nearly a factor of four in their critical parameter.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Vessel geometry is an explicit choice, and the characteristic length means something different in each: the radius for a sphere and a cylinder, the half-thickness for a slab.</p>
+<h4>Accuracy and conventions</h4>
+<p>The reaction rate at criticality is exactly e — a pure number, not a fitted one. Ignition is not a slow climb: the steady state is lost within the narrow temperature rise reported.</p>
+<h3 id="mod-14">Stirred Reactor</h3>
+<p class="meta">MOD-14</p>
+<p>The S-curve: ignition and extinction turning points of a well-stirred reactor.</p>
+<h4>Relation</h4>
+<div class="relation">Da(θ) = (θ)/(1-θ) e^(T_a/T_f)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Perfectly stirred: one temperature describes the whole reactor.</li>
+<li>A single overall reaction step.</li>
+<li>Adiabatic.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Solved with temperature as the independent variable rather than the Damköhler number, because the turning points have a vertical tangent in the other direction and a solver marching in Da would step straight past them. The turning points are located by scanning the reaction progress.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>A folded S-curve exists only for a sufficiently large activation energy and a cold enough inlet. Otherwise the response is a smooth climb with no turning points, and the screen says that rather than inventing two.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Ignition and extinction are two turning points, not one answer. Extinction needs a lower Damköhler number than ignition: once burning, the reactor keeps burning over a range where it could not have ignited. That gap is the hysteresis of the S-curve.</p>
+<h4>Accuracy and conventions</h4>
+<p>The Damköhler number folds the pre-exponential factor into itself, so its absolute value spans many decades and only ratios carry meaning. With a one-step reaction and a cold inlet the ignition branch sits at an enormous Damköhler number, because such a mixture really is essentially inert at the inlet temperature. Real mixtures ignite far earlier through chain branching, which this model does not contain.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Solved with temperature as the independent variable: the turning points have a vertical tangent in the other direction.</p>
+</div>
+<h3 id="mod-15">Flame Stretch</h3>
+<p class="meta">MOD-15</p>
+<p>Markstein length, stretched flame speed, and the stretch rate at extinction.</p>
+<h4>Relation</h4>
+<div class="relation">sᵤ = sᵤ° + Lᵤ κ,  (sᵤ/sᵤ°)ₑₓₜ = e^(-1/2)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>The flame speed responds linearly to stretch over the range considered.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Small Karlovitz number: the linear response is a weak-stretch result.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>Sign convention matters and is easy to get wrong. This app uses the stretch-rate convention with a plus sign, so a negative Markstein length means stretch slows the flame. Sources using the curvature convention carry the opposite sign for the same physical situation. A flame with a positive Markstein length is not extinguished by stretch at all, and the screen says so rather than returning a number.</p>
+<h3 id="mod-20">Quenching Distance</h3>
+<p class="meta">MOD-20</p>
+<p>Quenching distance, minimum ignition energy, and their pressure scaling.</p>
+<h4>Relation</h4>
+<div class="relation">Eₘᵢₙ ∝ d³,  U · d ≈ constant,  d ∝ 1/p</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Quenching is set by heat loss from the flame to the walls.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The reference distance must have been measured at the reference pressure, which is 1 atm here.</li>
+<li>The result is specific to the apparatus the measurement came from.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>The tube-to-plate conversion uses the conventional factor of 0.65 from tube data. The reference table in the app holds independent measurements only; the extrapolated column of the same report is deliberately not offered as a check, because those distances were read off a curve from the ignition energies and so are not independent of them.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>Quenching distance depends on the apparatus geometry. It is not a material constant.</p>
+<p>In the extrapolated data the distance was read off a curve from the ignition energy: the two columns are not independent.</p>
+</div>
+<h2>Non-premixed &amp; Turbulent</h2>
+<h3 id="mod-16">Mixture Fraction</h3>
+<p class="meta">MOD-16</p>
+<p>Mixture fraction, its stoichiometric value, and the Burke-Schumann flame structure.</p>
+<h4>Relation</h4>
+<div class="relation">Zₛₜ = [1 + ν Y_F,1/Y_O_2,2]⁻¹</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Equal diffusivities for all species, so a single conserved scalar describes the mixing.</li>
+<li>The Burke–Schumann reaction-sheet limit: infinitely fast chemistry confined to a surface.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>0 ≤ Z &lt; 1.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>In the reaction-sheet limit fuel and oxidiser never coexist: one of the two is always exactly zero. A screen showing both as non-zero would mean the limit had been violated.</p>
+<h3 id="mod-17">Droplet Combustion</h3>
+<p class="meta">MOD-17</p>
+<p>Transfer numbers, the square law rate constant, droplet lifetime and flame standoff.</p>
+<h4>Relation</h4>
+<div class="relation">r² = r₀² - K t,  K = (2(λ/cₚ))/(ρ_ℓ)ln(1+B)</div>
+<h4>Assumptions</h4>
+<ul>
+<li>Quasi-steady, spherically symmetric, constant properties.</li>
+<li>The droplet surface is at the boiling point.</li>
+<li>No convection.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form d²-law.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Low ambient velocity; the quasi-steady picture breaks down with strong convection.</li>
+<li>Taking the surface at the boiling point makes the mass-transfer form of the transfer number diverge, which is why the heat-transfer form is the one reported.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Evaporation and combustion are two different transfer numbers and therefore an explicit choice. The same droplet gives a different lifetime under each.</p>
+<h4>Accuracy and conventions</h4>
+<p>The rate constant here is defined on the radius squared. Most published constants are diameter-based and four times larger — both are shown so the comparison cannot go wrong silently. The reaction-sheet standoff ratio is much larger than measured values.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>The surface temperature is taken as the boiling point. The mass-transfer form of B diverges under that simplification.</p>
+<p>The rate constant here is defined on the radius squared: the diameter-based constant is four times larger.</p>
+</div>
+<h3 id="mod-18">Turbulent Regimes</h3>
+<p class="meta">MOD-18</p>
+<p>Where a turbulent flame falls on the regime diagram, and the four boundaries.</p>
+<h4>Relation</h4>
+<div class="relation">Re = Da² Ka²,  Ka_δ = δ² Ka</div>
+<h4>Assumptions</h4>
+<ul>
+<li>A Kolmogorov cascade of turbulent scales.</li>
+<li>The laminar flame thickness is taken as D/s_L.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>Closed form; the regime follows from where the point falls relative to the boundaries.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>Large turbulent Reynolds number.</li>
+</ul>
+<h4>More than one solution</h4>
+<p>Not a multi-solution structure, but the regime label is a classification: the same point can fall on either side of a boundary if the inner layer fraction is changed.</p>
+<h4>Accuracy and conventions</h4>
+<p>The inner layer fraction is a methane-air estimate, not a universal constant. It is editable precisely because it moves the broken-reaction-zone boundary, and a value silently baked in would hide that.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>The inner layer fraction defaults to a methane-air estimate. It is editable because it moves a regime boundary.</p>
+</div>
+<h3 id="mod-19">Transport Properties</h3>
+<p class="meta">MOD-19</p>
+<p>Viscosity and thermal conductivity from the official fits, plus the kinetic-theory route.</p>
+<h4>Relation</h4>
+<div class="relation">ln X = A ln T + B/T + C/T² + D</div>
+<h4>Assumptions</h4>
+<ul>
+<li>The fitted curves are for pure species at low density.</li>
+</ul>
+<h4>How it is solved</h4>
+<p>The official fitted form is evaluated in whichever temperature interval contains T.</p>
+<h4>Where it applies</h4>
+<ul>
+<li>The temperature must lie inside a fitted interval for that species.</li>
+<li>The species must be a pure species. The transport file also contains binary interaction pairs — 41 of its 107 records — and those are indexed separately so they can never be returned as if they were a pure property.</li>
+</ul>
+<h4>Accuracy and conventions</h4>
+<p>The file stores viscosity in micropoise and conductivity in μW/(cm·K); both are converted at the boundary and reported in SI. The heat capacity and density are supplied by you, not read from the file, so the Prandtl number, thermal diffusivity and kinematic viscosity derived from them are not table values.</p>
+<div class="limit"><h4>Stated in the application</h4>
+<p>The kinetic-theory route needs a collision integral, which has no default value in this app.</p>
+</div>
+
+<footer>
+<p><a href="../index.html">FlameOne</a> &middot; <a href="../support.html">Support</a> &middot;
+<a href="../privacy.html">Privacy</a> &middot; <a href="../../index.html">All applications</a></p>
+<p>Generated from the application's own module catalogue. Not written by hand, and therefore
+not able to drift from what the application does.</p>
+</footer>
+</div></body>
+</html>
