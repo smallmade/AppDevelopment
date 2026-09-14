@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ThrustOne · 发动机性能计算</title><style>
+:root {
+  --ink: #14171c; --dim: #5b626c; --line: #dfe3e8; --bg: #ffffff;
+  --panel: #f6f8fa; --accent: #b8440e; --accent-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6e9ee; --dim: #9aa1ab; --line: #2b3038; --bg: #16181c;
+    --panel: #1e2126; --accent: #ff8a5c; --accent-ink: #16181c;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+header { padding: 72px 0 40px; }
+h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+.lede { font-size: 1.2rem; color: var(--dim); margin: 0 0 28px; max-width: 60ch; }
+h2 { font-size: 1.5rem; margin: 56px 0 14px; letter-spacing: -0.01em; }
+h3 { font-size: 1.05rem; margin: 28px 0 8px; }
+p { max-width: 68ch; }
+a { color: var(--accent); }
+.buy {
+  display: inline-block; background: var(--accent); color: var(--accent-ink);
+  padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 600;
+}
+.price { color: var(--dim); margin-left: 14px; }
+figure { margin: 28px 0; }
+img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+figcaption { color: var(--dim); font-size: 0.9rem; margin-top: 8px; }
+.panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 18px 22px; margin: 22px 0;
+}
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid .panel { margin: 0; }
+table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 0.94rem; }
+.scroll { overflow-x: auto; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { color: var(--dim); font-weight: 600; }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
+footer { margin: 72px 0 48px; padding-top: 24px; border-top: 1px solid var(--line);
+         color: var(--dim); font-size: 0.9rem; }
+footer a { color: var(--dim); }
+</style></head><body><div class="wrap"><header><a href="../index.html">AppDevelopment</a><h1>ThrustOne · 发动机性能计算</h1></header><main><p class="lede">九类发动机、49个明确限定的计算模型。离线完成工况输入、性能计算、参数研究和结果导出。</p><p>适用于推进专业学习、教学和初步方案分析。macOS 11及以上，Apple芯片。首版准备中，尚未提供商店下载。</p><h2>计算范围</h2><p>涡喷、涡扇、液体火箭、固体火箭、亚燃冲压、超燃冲压，以及TBCC、RBCC和ATR的明确简化模型。支持所选模型的定比热或变比热计算、气相平衡、冻结膨胀及有限速率反应。</p><p>每个模型在App中说明输入条件、方程与限制。简化组合发动机模型不等于完整转换循环；本产品不提供全工况认证、液体汽化、冷却系统或真实背压匹配的完整设计。</p><h2>从输入到交付</h2><p>表单与JSON互编、算例保存重开、最多1000点参数研究、约束比较及单峰假设下的一维局部寻优。结果可导出JSON、CSV，图形可导出PNG与PDF。</p><p><a href="support.html">使用支持与反馈</a> · <a href="privacy.html">隐私政策</a></p></main><footer>ThrustOne · <a href="support.html">支持</a> · <a href="privacy.html">隐私</a></footer></div></body></html>

@@ -20,6 +20,13 @@
       "tagline": "Nineteen combustion calculations with the relation on the screen beside the number, and the limits of that relation beside both. NASA CEA data bundled offline.",
       "platforms": "Mac and iPad",
       "status": "not-yet-submitted"
+    },
+    {
+      "slug": "thrustone",
+      "name": "发动机性能计算 ThrustOne",
+      "tagline": "九类发动机的49个明确模型，离线计算、参数研究与结果导出。",
+      "platforms": "Mac (Apple silicon)",
+      "status": "not-yet-submitted"
     }
   ]
 }
