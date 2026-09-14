@@ -19,20 +19,23 @@
 body { margin: 0; background: var(--bg); color: var(--ink);
        font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
-header { padding: 64px 0 24px; }
-h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
+nav.top { padding: 18px 0 0; font-size: 0.9rem; }
+header { padding: 48px 0 24px; }
+h1 { font-size: 2.5rem; line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.02em; }
 .lede { font-size: 1.15rem; color: var(--dim); margin: 0 0 20px; max-width: 62ch; }
-h2 { font-size: 1.5rem; margin: 56px 0 12px; letter-spacing: -0.01em;
-     padding-top: 20px; border-top: 1px solid var(--line); }
-h3 { font-size: 1.12rem; margin: 32px 0 8px; }
-h4 { font-size: 0.95rem; margin: 20px 0 6px; color: var(--dim);
-     text-transform: uppercase; letter-spacing: 0.06em; }
-p, li { max-width: 70ch; }
+h2 { font-size: 1.65rem; margin: 64px 0 14px; letter-spacing: -0.01em;
+     padding-top: 22px; border-top: 2px solid var(--line); }
+h3 { font-size: 1.28rem; margin: 44px 0 6px; }
+h4 { font-size: 0.82rem; margin: 22px 0 6px; color: var(--dim);
+     text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+p, li { max-width: 72ch; }
 a { color: var(--accent); }
 code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
 .relation { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
             padding: 14px 18px; margin: 14px 0; overflow-x: auto;
-            font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9rem; }
+            font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92rem; }
+.preamble { background: var(--panel); border-radius: 8px; padding: 16px 20px; margin: 18px 0 0; }
+.preamble p { margin: 0; }
 table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.94rem; }
 th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line);
          vertical-align: top; }
@@ -40,17 +43,30 @@ th { color: var(--dim); font-weight: 600; }
 td.sym { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: nowrap; }
 td.unit { color: var(--dim); white-space: nowrap; }
 .limit { background: var(--panel); border-left: 3px solid var(--accent);
-         border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 14px 0; }
+         border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 16px 0; }
 .limit p { margin: 4px 0; }
-.toc { columns: 2; column-gap: 32px; margin: 20px 0 0; padding-left: 20px; }
-.toc li { max-width: none; }
-.meta { color: var(--dim); font-size: 0.9rem; }
-footer { margin: 72px 0 56px; padding-top: 24px; border-top: 1px solid var(--line);
+.modid { color: var(--dim); font-size: 0.85rem; margin: 0 0 10px;
+         font-family: ui-monospace, Menlo, Consolas, monospace; }
+.toc { columns: 2; column-gap: 36px; margin: 16px 0 0; padding-left: 20px; }
+.toc li { max-width: none; break-inside: avoid; }
+.toc-fam { font-weight: 600; list-style: none; margin-left: -20px; margin-top: 10px; }
+footer { margin: 80px 0 56px; padding-top: 24px; border-top: 1px solid var(--line);
          color: var(--dim); font-size: 0.9rem; }
 footer a { color: var(--dim); }
+@media print {
+  @page { size: A4; margin: 20mm 18mm; }
+  body { font-size: 10.5pt; line-height: 1.5; background: #fff; color: #000; }
+  .wrap { max-width: none; padding: 0; }
+  nav.top, footer { display: none; }
+  h2 { page-break-before: always; page-break-after: avoid; border-top: none; }
+  h2:first-of-type { page-break-before: avoid; }
+  h3, h4 { page-break-after: avoid; }
+  .relation, table, .limit, .preamble { page-break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+}
 </style></head>
 <body><div class="wrap">
-<nav aria-label="Main"><a href="../index.html">FlameOne</a> &middot; <a href="../theory/index.html">Theory manual</a> &middot; <a href="../support.html">Support</a> &middot; <a href="../privacy.html">Privacy</a></nav>
+<nav class="top" aria-label="Main"><a href="../index.html">FlameOne</a> &middot; <a href="../theory/index.html">Theory manual</a> &middot; <a href="../support.html">Support</a> &middot; <a href="../privacy.html">Privacy</a></nav>
 <header>
 <h1>User manual</h1>
 <p class="lede">What each screen asks for, what it gives back, and the conventions that
@@ -62,65 +78,85 @@ apply everywhere in the application.</p>
 <p>One screen answers one question. The sidebar groups the nineteen screens into four
 families; picking one opens it directly, and the application starts on a usable
 stoichiometric methane&ndash;air case rather than an empty document. There is nothing to
-create and nothing to save.</p>
+create, nothing to save, and no library to manage &mdash; the state of a screen is whatever
+is typed into it, and it lasts as long as the window is open.</p>
+
+<p>This manual is a reference rather than a tutorial. Each screen's entry is self-contained;
+nothing later depends on anything earlier except the conventions in the next section. If you
+want to know why a screen computes what it does rather than how to drive it, the
+<a href="../theory/index.html">theory manual</a> is the companion to this one and has an
+entry for every screen here.</p>
 
 <h2>Conventions that apply on every screen</h2>
 
 <h3>Typing a number</h3>
 <p>Entering a field selects what is already there, so typing replaces the value rather
 than appending to it. Part-typed numbers such as <code>-</code>, <code>1.</code> or
-<code>1e</code> are allowed to sit in the field while you finish them.</p>
+<code>1e</code> are allowed to sit in the field while you finish them; they are neither
+rejected nor submitted until they are complete.</p>
 <p><strong>Invalid input is refused, not repaired.</strong> A value outside the domain is
-rejected with the reason beside the field and the previous value stays in use; it is never
+rejected with the reason beside the field, and the previous value stays in use; it is never
 silently turned into zero or clamped into range. A calculation that quietly used a number
-you did not type is worse than one that refuses to run.</p>
+you did not type is worse than one that refuses to run, because the first kind produces a
+plausible answer and the second kind produces none.</p>
 
 <h3>Digits</h3>
-<p>Screens show four significant figures, which is what stays readable. Counts &mdash; such
-as a solver's iteration count &mdash; are shown as whole numbers, because there is no such
-thing as half an iteration. <strong>Export writes seventeen significant figures</strong>,
-which reproduces the underlying double-precision value exactly, so a downstream calculation
-gets the same answer you saw.</p>
+<p>Screens show four significant figures, which is what stays readable and is what the
+printed tables this application replaces carry. Counts &mdash; a solver's iteration count,
+for instance &mdash; are shown as whole numbers, because there is no such thing as half an
+iteration and two decimal places there would assert a precision that does not exist.</p>
+<p><strong>Export writes seventeen significant figures</strong>, which is the shortest count
+that reproduces a double-precision number exactly. A value taken out as CSV and read back
+into a spreadsheet is bit for bit the value that was on the screen, not a rounded copy of
+it.</p>
 
 <h3>Units</h3>
 <p>Everything is computed in SI internally; conversion happens only at the boundary, where
-you type and where the result is displayed. Each field states its own unit, and each result
-carries the unit it is reported in.</p>
+you type and where the result is displayed. Each field states its own unit and each result
+carries the unit it is reported in. Nothing in the application has a unit system that
+switches, because a unit switch is a class of defect that testing finds late and users find
+first.</p>
 
 <h3>Where a relation has more than one solution</h3>
 <p>Both are shown. Strong and weak branches, ignition and extinction turning points, frozen
 and equilibrium flame temperature &mdash; the application does not choose one for you,
 because which one applies is a property of your problem and not of the arithmetic. Where a
-modelling choice has to be made, it is a visible control on the screen rather than an
-internal default.</p>
+modelling choice genuinely has to be made, it is a visible control on the screen with the
+reason the options differ printed beside it. A control offering two names and no reason is
+a control the reader takes the first item from.</p>
 
 <h3>What each screen tells you about itself</h3>
-<p>Every screen carries the relation it uses, under <em>Relation used</em>, and a standing
-note of what the model does not cover. Those notes are not dismissible: the limits of a
-model are part of its answer.</p>
+<p>Every screen carries the relation it evaluates and, under <em>Relation and assumptions</em>,
+the same theory material this application's theory manual contains: what the relation
+assumes, how it is solved, where it stops applying, and how accurate the answer is known to
+be. Screens with a stated limitation also carry a standing, non-dismissible note of it. The
+limits of a model are part of its answer.</p>
 
 <h3>Exporting</h3>
 <p><strong>Export CSV</strong> in the toolbar writes the conditions, the results and the
-stated limitations as one file, at seventeen significant figures. Charts have their own
+stated limitations as one file at seventeen significant figures. Charts have their own
 <strong>PNG</strong> and <strong>PDF</strong> buttons: PNG at 2&times; for a report, PDF as
-vector for typesetting. Every export carries the conditions it was computed under and the
-version that produced it &mdash; a curve with no stated conditions cannot be checked by
+true vector for typesetting. Every export carries the conditions it was computed under and
+the version that produced it &mdash; a curve with no stated conditions cannot be checked by
 anyone, including the person who exported it.</p>
 
 <h3>Licences</h3>
 <p><strong>About &amp; Licences</strong> at the foot of the sidebar shows the version, what
 data is bundled, and the full licence and NOTICE for that data.</p>
 
-<h2>The screens</h2>
+<h2>Contents</h2>
 <ul class="toc">
+<li class="toc-fam">Thermochemistry</li>
 <li><a href="#mod-01">Stoichiometry</a></li>
 <li><a href="#mod-02">Heating Value</a></li>
 <li><a href="#mod-04">Flame Temperature — Frozen</a></li>
 <li><a href="#mod-05">Equilibrium Composition</a></li>
 <li><a href="#mod-06">Flame Temperature — Equilibrium</a></li>
+<li class="toc-fam">Combustion Waves</li>
 <li><a href="#mod-07">Hugoniot Explorer</a></li>
 <li><a href="#mod-08">Chapman–Jouguet</a></li>
 <li><a href="#mod-09">von Neumann State</a></li>
+<li class="toc-fam">Laminar Flames &amp; Limits</li>
 <li><a href="#mod-10">Laminar Flame Speed</a></li>
 <li><a href="#mod-11">Flame Scales</a></li>
 <li><a href="#mod-12">Flammability Limits</a></li>
@@ -128,58 +164,78 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <li><a href="#mod-14">Stirred Reactor</a></li>
 <li><a href="#mod-15">Flame Stretch</a></li>
 <li><a href="#mod-20">Quenching Distance</a></li>
+<li class="toc-fam">Non-premixed &amp; Turbulent</li>
 <li><a href="#mod-16">Mixture Fraction</a></li>
 <li><a href="#mod-17">Droplet Combustion</a></li>
 <li><a href="#mod-18">Turbulent Regimes</a></li>
 <li><a href="#mod-19">Transport Properties</a></li>
 </ul>
 <h2>Thermochemistry</h2>
+<div class="preamble"><p>Everything in this family rests on the same thermodynamic data and the same idea: that a chemical state can be described by enthalpies and entropies which are functions of temperature alone, tabulated once and reused. The screens differ in what they hold fixed. Stoichiometry holds the chemistry fixed and asks what the proportions are; heating value holds the temperature fixed and asks what the energy difference is; the flame temperature screens hold the energy fixed and solve for temperature; equilibrium holds temperature and pressure fixed and solves for composition. A reader who follows that thread will find the four screens are one calculation entered from four sides.</p></div>
 <h3 id="mod-01">Stoichiometry</h3>
-<p class="meta">MOD-01</p>
+<p class="modid">MOD-01</p>
 <p>Equivalence ratio, air–fuel ratio and the soot threshold for a C–H–O–N fuel.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">z</td><td>Oxygen atoms</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">w</td><td>Nitrogen atoms</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">—</td><td>Air model</td><td class="unit">textbook 21/79 or CEA standard dry</td></tr>
-<tr><td class="sym">A/F</td><td>Air–fuel ratio</td><td class="unit">kg/kg</td></tr>
+<tr><td class="sym">x</td><td>Carbon atoms in the fuel molecule</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Hydrogen atoms in the fuel molecule</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">z</td><td>Oxygen atoms in the fuel molecule</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">w</td><td>Nitrogen atoms in the fuel molecule</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Air model</td><td class="unit">textbook 21/79, or CEA standard dry</td></tr>
+<tr><td class="sym">A/F</td><td>Air–fuel ratio of the mixture you are asking about</td><td class="unit">kg/kg</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">φ</td><td>Equivalence ratio</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Φ̃</td><td>Normalised equivalence ratio</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">a</td><td>Stoichiometric oxygen</td><td class="unit">mol/mol fuel</td></tr>
+<tr><td class="sym">a</td><td>Stoichiometric oxygen requirement</td><td class="unit">mol O₂/mol fuel</td></tr>
 <tr><td class="sym">(A/F)st</td><td>Stoichiometric air–fuel ratio</td><td class="unit">kg/kg</td></tr>
 <tr><td class="sym">—</td><td>Stoichiometric air per fuel</td><td class="unit">mol/mol</td></tr>
 <tr><td class="sym">M</td><td>Fuel molar mass</td><td class="unit">g/mol</td></tr>
-<tr><td class="sym">φ</td><td>Soot threshold</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">φ</td><td>Soot threshold equivalence ratio</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<h3 id="mod-02">Heating Value</h3>
-<p class="meta">MOD-02</p>
+<h4>Choices you have to make</h4>
+<ul>
+<li>The air composition is a control on the screen, not an internal constant. Textbook air is 0.21 O₂ + 0.79 N₂ and reproduces figures printed in textbooks; CEA standard dry air contains argon and carbon dioxide and reproduces NASA CEA. Their molar masses differ by about 0.4%, which moves every quantity here that depends on the air–fuel ratio, and the difference is large enough to look like an error if you do not know which model produced the number you are comparing against.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether the fuel needs any external oxidiser at all is settled by z: with enough fuel-bound oxygen the requirement a falls to zero or below and the equivalence ratio has no meaning. The screen says so in words rather than returning a number, because a negative or infinite equivalence ratio printed in a results table is worse than no answer.</li>
+<li>Whether the mixture is lean, rich or stoichiometric is settled by the equivalence ratio itself and is labelled beside it. There is no control, because it is a reading of what you already typed.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The soot threshold is the quantity most often misread here. It is a purely stoichiometric estimate — the equivalence ratio at which oxygen runs out for the carbon-to-CO route — and it is not a measured sooting limit. Real flames begin to soot well before it, because soot forms in locally rich regions long before the mixture as a whole is that rich, and because the kinetics of soot inception have nothing to do with this calculation. Treat it as an upper bound on where sooting could conceivably be avoided, not as a prediction of where it starts.</p>
+<p>The second common misreading is comparing an equivalence ratio computed here against one from another source without checking which air model each used. A 0.4% difference in the molar mass of air moves the stoichiometric air–fuel ratio by the same fraction, which is small enough to look like rounding and large enough to matter when you are checking a number to four figures.</p><h3 id="mod-02">Heating Value</h3>
+<p class="modid">MOD-02</p>
 <p>Heat of reaction, and the lower and higher heating values of a fuel.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">—</td><td>Species name</td><td class="unit">must match the data file</td></tr>
+<tr><td class="sym">—</td><td>Species name</td><td class="unit">must match the data file exactly</td></tr>
 <tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">T</td><td>Temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">T</td><td>Temperature at which the reaction is evaluated</td><td class="unit">K</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">LHV</td><td>Lower heating value</td><td class="unit">kJ/mol</td></tr>
 <tr><td class="sym">HHV</td><td>Higher heating value</td><td class="unit">kJ/mol</td></tr>
-<tr><td class="sym">LHV</td><td>Lower heating value, mass basis</td><td class="unit">MJ/kg</td></tr>
+<tr><td class="sym">LHV</td><td>Lower heating value on a mass basis</td><td class="unit">MJ/kg</td></tr>
 <tr><td class="sym">ΔHf</td><td>Formation enthalpy at 298.15 K</td><td class="unit">kJ/mol</td></tr>
-<tr><td class="sym">cp</td><td>Heat capacity</td><td class="unit">J/(mol·K)</td></tr>
+<tr><td class="sym">cp</td><td>Molar heat capacity at the stated temperature</td><td class="unit">J/(mol·K)</td></tr>
 </tbody></table>
-<h3 id="mod-04">Flame Temperature — Frozen</h3>
-<p class="meta">MOD-04</p>
+<h4>Settled without asking</h4>
+<ul>
+<li>The water phase is not a control: both values are computed and shown together, labelled. A control would let a reader pick one and forget which, and the two differ by around ten per cent for a typical hydrocarbon — large enough to matter and small enough to go unnoticed.</li>
+<li>Whether the species is in the database is settled by the name you typed. If it is not, the screen says so and names the string it looked for, rather than returning zero.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>Which of the two values to use is decided by the application, not by the fuel. If the exhaust leaves above the dew point — almost every engine, furnace and turbine — the water leaves as vapour and its latent heat is never recovered, so the lower value is the one that describes what you got. A condensing boiler recovers part of it and sits between the two. Quoting an efficiency against the lower value and comparing it against someone else's efficiency quoted against the higher one produces a difference of ten per cent that is entirely an artefact of the convention.</p>
+<p>The mass-basis value is the one to compare across fuels of different molar mass; the molar value is the one to use in an energy balance where you are tracking moles. Hydrogen and methane rank in opposite orders on the two bases, which is the clearest illustration that the choice of basis is not cosmetic.</p><h3 id="mod-04">Flame Temperature — Frozen</h3>
+<p class="modid">MOD-04</p>
 <p>Adiabatic flame temperature with a fixed product composition.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -188,46 +244,66 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">φ</td><td>Equivalence ratio</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">T₁</td><td>Initial temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">T₁</td><td>Initial temperature of the reactants</td><td class="unit">K</td></tr>
 <tr><td class="sym">—</td><td>Air model</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">—</td><td>Rich product rule</td><td class="unit">when φ &gt; 1</td></tr>
+<tr><td class="sym">—</td><td>Rich product rule</td><td class="unit">only when φ &gt; 1</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">Tad</td><td>Frozen flame temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">Tad</td><td>Equilibrium flame temperature, shown alongside</td><td class="unit">K</td></tr>
+<tr><td class="sym">Tad</td><td>Frozen adiabatic flame temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Tad</td><td>Equilibrium value, computed alongside</td><td class="unit">K</td></tr>
 <tr><td class="sym">ΔT</td><td>Dissociation penalty</td><td class="unit">K</td></tr>
-<tr><td class="sym">n</td><td>Product moles per mole fuel</td><td class="unit">mol</td></tr>
+<tr><td class="sym">n</td><td>Product moles per mole of fuel</td><td class="unit">mol</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Choices you have to make</h4>
+<ul>
+<li>The rich product rule appears as a control only when the equivalence ratio exceeds one, because below that there is nothing to choose. It is a control rather than a default because no assignment is more correct than another within the frozen assumption; the honest options are a stated convention or a refusal, and both are offered.</li>
+<li>The air composition, as on the stoichiometry screen.</li>
+<li>Frozen or equilibrium is itself a control on this screen, shared with MOD-06, because the two answers belong side by side.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>The pressure field is disabled in the frozen model rather than hidden. A frozen composition has no pressure dependence at all — the enthalpy balance contains no pressure term — and the field carries a note saying so. Hiding it would leave a reader wondering whether they had forgotten to set it.</li>
+<li>Both the frozen and the equilibrium temperature are shown together, always, with the gap between them labelled. Neither requires a choice to see.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>This number is an upper bound and should be read as one. It is the temperature a flame would reach if nothing dissociated, nothing leaked heat, and the reaction went to completion; a measured flame temperature below it is not evidence of an error. The quantity worth looking at is not the frozen value alone but the gap between it and the equilibrium value shown beside it, which is labelled the dissociation penalty. For a hydrocarbon in air near stoichiometric that gap is of order a hundred kelvin and grows quickly with temperature, because dissociation is itself strongly temperature dependent.</p>
+<p>The frozen value peaks exactly at stoichiometric. The equilibrium value does not — it peaks slightly rich — and the difference between those two statements is visible on the sweep chart. If you are using the peak location to infer anything about a real burner, the equilibrium curve is the one to read.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Product composition does not dissociate; the temperature is therefore an upper bound.</p>
 </div>
 <h3 id="mod-05">Equilibrium Composition</h3>
-<p class="meta">MOD-05</p>
+<p class="modid">MOD-05</p>
 <p>Equilibrium mole fractions at a given temperature and pressure.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">C</td><td>Carbon</td><td class="unit">mol</td></tr>
-<tr><td class="sym">H</td><td>Hydrogen</td><td class="unit">mol</td></tr>
-<tr><td class="sym">O</td><td>Oxygen</td><td class="unit">mol</td></tr>
-<tr><td class="sym">N</td><td>Nitrogen</td><td class="unit">mol</td></tr>
+<tr><td class="sym">C</td><td>Carbon atoms available</td><td class="unit">mol</td></tr>
+<tr><td class="sym">H</td><td>Hydrogen atoms available</td><td class="unit">mol</td></tr>
+<tr><td class="sym">O</td><td>Oxygen atoms available</td><td class="unit">mol</td></tr>
+<tr><td class="sym">N</td><td>Nitrogen atoms available</td><td class="unit">mol</td></tr>
 <tr><td class="sym">T</td><td>Temperature</td><td class="unit">K</td></tr>
 <tr><td class="sym">p</td><td>Pressure</td><td class="unit">atm</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">Xj</td><td>Mole fraction of each product species</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">—</td><td>Iterations</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Xj</td><td>Mole fraction of each of the ten product species</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Iterations taken</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">—</td><td>Largest element residual</td><td class="unit">mol</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>There is no multi-solution structure to expose. The constrained minimum of a convex function on a convex set is unique, and there is no second root for a control to select between.</li>
+<li>Whether the element inventory is admissible is settled by what you typed: if an element is present that no species in the set can carry, the solver refuses and says so rather than returning a composition that conserves only some of the atoms.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The two numbers under the solver heading are not decoration. The iteration count tells you whether the problem was easy or marginal; the largest element residual tells you how exactly atoms were conserved in the answer you are looking at. A residual many orders of magnitude below the element inventory means the composition is trustworthy to well beyond the four figures shown. If it is not, that is visible rather than assumed — which is the point of putting it on the screen.</p>
+<p>Equilibrium is a limit, not a prediction. It says where the mixture would end up given unlimited time at that temperature and pressure. A flame with a millisecond of residence time may be nowhere near it, particularly for nitric oxide, whose formation is slow enough that measured concentrations in real devices are routinely far below the equilibrium value shown here. Reading the NO mole fraction as an emissions prediction is the single most common way to misuse this screen.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Gas phase only. Condensed species are not considered, so soot-forming rich mixtures are incomplete.</p>
 </div>
 <h3 id="mod-06">Flame Temperature — Equilibrium</h3>
-<p class="meta">MOD-06</p>
+<p class="modid">MOD-06</p>
 <p>Adiabatic flame temperature with a dissociating product composition.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -244,52 +320,76 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">Tad</td><td>Equilibrium flame temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">Xj</td><td>Product composition</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">n</td><td>Product moles per mole fuel</td><td class="unit">mol</td></tr>
+<tr><td class="sym">Tad</td><td>Equilibrium adiabatic flame temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">Xj</td><td>Product composition at that temperature</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">n</td><td>Product moles per mole of fuel</td><td class="unit">mol</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Choices you have to make</h4>
+<ul>
+<li>The product species set is named on the screen. It is not a free control, but it is stated, because a different set is a different question rather than a more accurate answer to the same one. Adding a species can only lower the computed temperature, since it gives the system another way to absorb energy.</li>
+<li>Air model and frozen/equilibrium, shared with MOD-04.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>Argon's presence in the species set is settled by the air model: choosing CEA air adds argon to the set automatically. This was a real defect — selecting CEA air with the textbook species set made the solver refuse, correctly, and the user saw only a failure. Two branches that were each right were wrong in combination.</li>
+<li>The pressure field is enabled here and disabled on the frozen screen, which is itself the clearest statement of the difference between the two models.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>This value and the frozen value bracket the real adiabatic flame temperature from below and above. That bracket is the reading, more than either endpoint is: a measurement inside it is consistent with both models, and a measurement outside it means something in the problem statement is wrong — usually heat loss, which pushes the real value below the equilibrium bound.</p>
+<p>The verification worth knowing about: this screen's results were checked case by case against NASA's own published CEA output. The largest deviation appears in the hydroxyl mole fraction and is explained quantitatively by a known revision to OH's formation enthalpy between the data sets — that is, it is accounted for rather than absorbed into a tolerance wide enough to hide it. A deviation with a name is a different thing from a deviation within a bound.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Gas phase only.</p>
 <p>The set of product species is a choice: different sets give different answers.</p>
 </div>
 <h2>Combustion Waves</h2>
+<div class="preamble"><p>These three screens describe the same object — a thin, steady, one-dimensional wave with heat release — from three directions. The Hugoniot screen draws the locus of all end states reachable from a given initial state and asks which of them a given wave speed selects. The Chapman–Jouguet screen asks which wave speed makes that selection degenerate, which is what picks out the self-sustaining detonation. The von Neumann screen looks inside the wave at the shocked state before the heat has been released. The conservation laws are identical in all three; only the unknown moves.</p></div>
 <h3 id="mod-07">Hugoniot Explorer</h3>
-<p class="meta">MOD-07</p>
+<p class="modid">MOD-07</p>
 <p>Rayleigh line, Hugoniot curve, and which of the seven regions a wave falls in.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">P₁</td><td>Unburned pressure</td><td class="unit">atm</td></tr>
 <tr><td class="sym">T₁</td><td>Unburned temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">R</td><td>Gas constant</td><td class="unit">J/(kg·K)</td></tr>
-<tr><td class="sym">q</td><td>Heat release</td><td class="unit">MJ/kg</td></tr>
-<tr><td class="sym">γ₁</td><td>Unburned specific heat ratio</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">γ₂</td><td>Burned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">R</td><td>Specific gas constant</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">q</td><td>Heat release per unit mass of mixture</td><td class="unit">MJ/kg</td></tr>
+<tr><td class="sym">γ₁</td><td>Specific heat ratio, unburned</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">γ₂</td><td>Specific heat ratio, burned</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Ma₁</td><td>Upstream Mach number</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">λ</td><td>Reaction progress</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">λ</td><td>Reaction progress</td><td class="unit">0 to 1</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">x</td><td>Volume ratio, strong and weak</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">y</td><td>Pressure ratio, strong and weak</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">x</td><td>Specific volume ratio, strong and weak solutions</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">y</td><td>Pressure ratio, strong and weak solutions</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Ma₂</td><td>Downstream Mach number</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">P₂</td><td>Downstream pressure</td><td class="unit">kPa</td></tr>
 <tr><td class="sym">T₂</td><td>Downstream temperature</td><td class="unit">K</td></tr>
 <tr><td class="sym">—</td><td>Which of the seven regions each solution falls in</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<h3 id="mod-08">Chapman–Jouguet</h3>
-<p class="meta">MOD-08</p>
+<h4>Choices you have to make</h4>
+<ul>
+<li>Whether to use one specific heat ratio or two is a toggle. Two is the general case and is the default; one is the special case where the two happen to be equal, and it exists because many textbook treatments make that simplification and a reader checking against one needs to be able to reproduce it.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>How many solutions there are is settled by the discriminant, not by a control. Two, one, or none are all reported as what they are, and none is reported as a physical result rather than a failure.</li>
+<li>Which region a solution falls in is a property of where it landed and is computed from it. A selector would let a reader assert a region and be shown a solution labelled with it.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>Both solutions are shown because both satisfy the conservation laws, and deciding between them is not something the arithmetic can do. The strong solution has a higher pressure ratio and a subsonic downstream Mach number; the weak solution has a lower pressure ratio and a supersonic one. Which occurs in a real device depends on the downstream boundary condition — what the flow runs into — and that is information this screen does not have. A calculation that silently returned one of them would be answering a question you had not asked.</p>
+<p>The region labels are worth reading before the numbers. A solution sitting in the region marked impossible is telling you that the combination of inputs does not describe a wave, even though the algebra produced values for it. And when the screen reports no intersection, that is the honest answer: at that Mach number, with that heat release, no steady wave exists. Reading it as a failure of the calculation rather than a statement about the physics is the most common misreading here.</p><h3 id="mod-08">Chapman–Jouguet</h3>
+<p class="modid">MOD-08</p>
 <p>The tangency solution: detonation and deflagration wave speeds and end states.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">P₁</td><td>Unburned pressure</td><td class="unit">atm</td></tr>
 <tr><td class="sym">T₁</td><td>Unburned temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">R</td><td>Gas constant</td><td class="unit">J/(kg·K)</td></tr>
-<tr><td class="sym">q</td><td>Heat release</td><td class="unit">MJ/kg</td></tr>
-<tr><td class="sym">γ₁</td><td>Unburned specific heat ratio</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">γ₂</td><td>Burned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">R</td><td>Specific gas constant</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">q</td><td>Heat release per unit mass</td><td class="unit">MJ/kg</td></tr>
+<tr><td class="sym">γ₁</td><td>Specific heat ratio, unburned</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">γ₂</td><td>Specific heat ratio, burned</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">λ</td><td>Reaction progress</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
 <h4>It reports</h4>
@@ -302,72 +402,96 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">—</td><td>CJ deflagration wave speed</td><td class="unit">m/s</td></tr>
 <tr><td class="sym">—</td><td>CJ deflagration pressure ratio</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>Both branches are computed and shown together. There is no control, because a reader interested in one is served by seeing both — the deflagration branch is often the one that surprises people, being subsonic and slow.</li>
+<li>Whether a branch exists at all is settled by the heat release: with none, the two merge.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The CJ detonation speed is the quantity most often compared against measurement, and it usually agrees well — often within a few per cent — which is remarkable for a model containing no chemistry at all. That agreement rests entirely on the heat release you supplied being the right one. Supplying a heating value instead of the heat release per unit mass of mixture is the commonest error, and it inflates the answer substantially: the heating value is per unit mass of fuel, and a stoichiometric hydrocarbon-air mixture is mostly air.</p>
+<p>The deflagration branch is a mathematical companion rather than a description of an ordinary flame. Real laminar flames propagate at a metre or two per second, far below even the CJ deflagration speed, and are governed by diffusion and chemistry rather than by this tangency condition. The CJ deflagration is an upper limit on a subsonic combustion wave, not a prediction of one.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Frozen composition: the heat release is an input, not derived from equilibrium.</p>
 </div>
 <h3 id="mod-09">von Neumann State</h3>
-<p class="meta">MOD-09</p>
+<p class="modid">MOD-09</p>
 <p>The state behind the leading shock, overdrive factor and induction length.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">P₁</td><td>Unburned pressure</td><td class="unit">atm</td></tr>
 <tr><td class="sym">T₁</td><td>Unburned temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">γ₁</td><td>Unburned specific heat ratio</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">γ₁</td><td>Specific heat ratio, unburned</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Ma₁</td><td>Upstream Mach number</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">pN/p₁</td><td>Pressure ratio across the shock</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">TN/T₁</td><td>Temperature ratio</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">MaN</td><td>Mach number behind the shock</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">TN</td><td>Temperature behind the shock</td><td class="unit">K</td></tr>
+<tr><td class="sym">pN/p₁</td><td>Pressure ratio across the leading shock</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">TN/T₁</td><td>Temperature ratio across the leading shock</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">MaN</td><td>Mach number immediately behind the shock</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">TN</td><td>Temperature immediately behind the shock</td><td class="unit">K</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether a leading shock exists at all is settled by the Mach number. Below one there is no shock, and the screen says so rather than returning ratios below unity that would look like an expansion.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>Read this as the peak, not the end state. The sequence is: the gas crosses the leading shock and reaches the von Neumann pressure; it then reacts, and the pressure falls along the Rayleigh line to the Chapman–Jouguet value. If you are sizing something for a detonation load, the von Neumann pressure is the transient peak and the CJ pressure is what follows it — and a design based on the CJ value alone has underestimated the peak by roughly a factor of two.</p>
+<p>The temperature behind the shock is what actually initiates the reaction, which is why it is reported. An ignition delay evaluated at the initial temperature rather than at this one will be wrong by orders of magnitude, because the delay depends exponentially on temperature and this temperature is several times the initial one.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>The ignition delay has no default value and must be supplied.</p>
 </div>
 <h2>Laminar Flames &amp; Limits</h2>
+<div class="preamble"><p>A laminar flame is a balance between diffusion carrying heat and radicals forward and chemistry consuming reactants. Every screen in this family is a consequence of that balance being tipped one way or another: by activation energy, by heat loss to a wall, by stretch, by residence time. They share a single structural feature — a large activation energy, which makes the reaction rate change by orders of magnitude over a temperature range in which everything else barely moves. That is what produces thresholds rather than gradual transitions, and it is why so many of these screens report a critical value rather than a curve.</p></div>
 <h3 id="mod-10">Laminar Flame Speed</h3>
-<p class="meta">MOD-10</p>
+<p class="modid">MOD-10</p>
 <p>Asymptotic solution, and scaling a measured flame speed to other conditions.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">Z′</td><td>Pre-exponential factor</td><td class="unit">kg/(m³·s), asymptotic route</td></tr>
+<tr><td class="sym">Z′</td><td>Pre-exponential factor, zero-order form</td><td class="unit">kg/(m³·s)</td></tr>
 <tr><td class="sym">E</td><td>Activation energy</td><td class="unit">J/mol</td></tr>
-<tr><td class="sym">a₀</td><td>Initial reactant density</td><td class="unit">kg/m³</td></tr>
+<tr><td class="sym">a₀</td><td>Initial reactant mass concentration</td><td class="unit">kg/m³</td></tr>
 <tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
 <tr><td class="sym">ρ₀</td><td>Unburned density</td><td class="unit">kg/m³</td></tr>
-<tr><td class="sym">cp</td><td>Heat capacity</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">cp</td><td>Specific heat</td><td class="unit">J/(kg·K)</td></tr>
 <tr><td class="sym">Tf</td><td>Flame temperature</td><td class="unit">K</td></tr>
 <tr><td class="sym">T₀</td><td>Unburned temperature</td><td class="unit">K</td></tr>
 <tr><td class="sym">Le</td><td>Lewis number</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">S_L</td><td>Measured flame speed</td><td class="unit">m/s, scaling route</td></tr>
-<tr><td class="sym">n</td><td>Overall reaction order</td><td class="unit">scaling route</td></tr>
+<tr><td class="sym">S_L</td><td>Measured flame speed at the reference condition</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">n</td><td>Overall reaction order</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">S_L</td><td>Flame speed</td><td class="unit">m/s</td></tr>
 <tr><td class="sym">f°</td><td>Mass burning flux</td><td class="unit">kg/(m²·s)</td></tr>
-<tr><td class="sym">—</td><td>Flux corrected for the Lewis number</td><td class="unit">kg/(m²·s)</td></tr>
-<tr><td class="sym">—</td><td>Ratio to the reference</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Mass flux corrected for the Lewis number</td><td class="unit">kg/(m²·s)</td></tr>
+<tr><td class="sym">—</td><td>Ratio of the scaled speed to the reference</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">—</td><td>Pressure exponent for the speed and for the mass flux</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Choices you have to make</h4>
+<ul>
+<li>The two routes are a control because they are not two ways of computing the same thing. One needs kinetic parameters and produces a speed from first principles; the other needs a measurement and produces a speed at new conditions. A reader who has neither cannot use this screen, and a reader who has one of them should not be offered the other silently.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether the asymptotic route can produce an answer is settled by whether a pre-exponential factor has been supplied. Until one is, the screen shows an empty state explaining why rather than a number computed from a placeholder.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>No default is offered for the pre-exponential factor or for the overall reaction order, and that is deliberate rather than an omission. Any number placed in either field would be read as a property of combustion rather than as a fit to a particular mixture, and the second one has a worse trap: an overall order of exactly two makes the pressure dependence vanish. Offering two as a convenient default would hand a reader a pressure-independent flame speed and no indication that they had been given one.</p>
+<p>The mass burning flux, not the speed, is the intrinsic quantity. The speed depends on the unburned density and therefore on pressure and preheat temperature in ways that have nothing to do with the chemistry; the flux does not. When comparing two conditions, or applying the Lewis correction, work with the flux and convert at the end. This is also why the Lewis correction is applied to the flux here rather than to the speed, which is where some presentations put it.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>The pre-exponential factor and the overall reaction order have no default values: both depend on the mixture.</p>
 </div>
 <h3 id="mod-11">Flame Scales</h3>
-<p class="meta">MOD-11</p>
+<p class="modid">MOD-11</p>
 <p>Zeldovich and Lewis numbers, preheat and reaction zone thickness, mass burning flux.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">E</td><td>Activation energy</td><td class="unit">J/mol</td></tr>
-<tr><td class="sym">T_b</td><td>Flame temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">T_u</td><td>Unburned temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">S_L</td><td>Flame speed</td><td class="unit">m/s</td></tr>
+<tr><td class="sym">T_b</td><td>Burned gas temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">T_u</td><td>Unburned gas temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">S_L</td><td>Laminar flame speed</td><td class="unit">m/s</td></tr>
 <tr><td class="sym">ρ_u</td><td>Unburned density</td><td class="unit">kg/m³</td></tr>
 <tr><td class="sym">α</td><td>Thermal diffusivity</td><td class="unit">m²/s</td></tr>
 <tr><td class="sym">D</td><td>Mass diffusivity</td><td class="unit">m²/s</td></tr>
@@ -383,8 +507,14 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">ℓ_R</td><td>Reaction zone thickness</td><td class="unit">μm</td></tr>
 <tr><td class="sym">f°</td><td>Mass burning flux</td><td class="unit">kg/(m²·s)</td></tr>
 </tbody></table>
-<h3 id="mod-12">Flammability Limits</h3>
-<p class="meta">MOD-12</p>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether the flame is on the diffusively stable or unstable side is settled by the Lewis number and labelled beside it. There is nothing to choose: it is a reading of the two diffusivities you entered.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The Lewis number here is defined as thermal diffusivity over mass diffusivity. The reciprocal convention exists and is used in parts of the literature, and under it every statement about stability reverses: a value of 0.8 becomes 1.25 and a diffusively unstable mixture reads as a stable one. If you are comparing against a published value, check which way that source defines it before concluding anything. This is stated on the screen beside the input for the same reason.</p>
+<p>The thicknesses are order-of-magnitude quantities. They are computed from constant properties in a flame where the density changes by a factor of six or seven, so a result of 0.05 mm means tens of microns to a hundred, not fifty microns to two significant figures. Their ratio is more reliable than either value, because the property errors largely cancel.</p><h3 id="mod-12">Flammability Limits</h3>
+<p class="modid">MOD-12</p>
 <p>Le Chatelier mixing rule and the Burgess-Wheeler limit temperature law.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -398,14 +528,20 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">(LFL)mix</td><td>Mixture lean limit</td><td class="unit">vol %</td></tr>
-<tr><td class="sym">(LFL)</td><td>Predicted lean limit</td><td class="unit">vol %</td></tr>
+<tr><td class="sym">(LFL)mix</td><td>Lean limit of the mixture</td><td class="unit">vol %</td></tr>
+<tr><td class="sym">(LFL)</td><td>Predicted lean limit from the heat of combustion</td><td class="unit">vol %</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>Nothing on this screen branches. Both relations are computed and shown together, because they answer different questions — one combines measured limits, the other estimates a limit from an energy argument — and a reader benefits from seeing whether they agree.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>These are measurements wearing the clothes of constants, and the screen carries a permanent, non-dismissible panel saying so. They depend on tube diameter, on ignition energy, on whether the flame propagates upward or downward, and on ambient temperature. A published limit without those conditions attached is incomplete, and comparing two such numbers is comparing two experiments.</p>
+<p>Where two sources transcribing the same underlying report disagree — methane's rich limit is printed as 14.9 in one and 15.0 in the other — both are kept rather than averaged. Averaging two transcriptions of one measurement invents a third number that nobody measured, and buries the fact that the disagreement exists. If a decision turns on the difference between 14.9 and 15.0, that decision needs the original report, not this screen.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Published limits are measurements, not material constants: two sources disagree on methane by 0.7%.</p>
 </div>
 <h3 id="mod-13">Thermal Explosion</h3>
-<p class="meta">MOD-13</p>
+<p class="modid">MOD-13</p>
 <p>Semenov criterion, critical temperature rise, and Frank-Kamenetskii critical size.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -423,11 +559,21 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tbody>
 <tr><td class="sym">ΔTc</td><td>Critical temperature rise</td><td class="unit">K</td></tr>
 <tr><td class="sym">Tc</td><td>Critical temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">—</td><td>Reaction rate at criticality</td><td class="unit">× ambient rate</td></tr>
+<tr><td class="sym">—</td><td>Reaction rate at criticality</td><td class="unit">× the ambient rate</td></tr>
 <tr><td class="sym">—</td><td>Critical size</td><td class="unit">mm</td></tr>
 </tbody></table>
-<h3 id="mod-14">Stirred Reactor</h3>
-<p class="meta">MOD-14</p>
+<h4>Choices you have to make</h4>
+<ul>
+<li>The vessel geometry is a control, and it must be, because the critical parameter differs by nearly a factor of four across the three shapes and the characteristic length means something different in each. The screen prints the critical parameter and names what the length refers to, because a control offering three names and no consequences is one a reader picks the first item from.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>Both the Semenov and the Frank-Kamenetskii results are shown together without a control. They rest on opposite assumptions about the Biot number, and a reader who sees only one has no way to know which regime they are in.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The critical temperature rise is small — of order twenty or thirty kelvin for a typical activation energy at a few hundred kelvin — and that smallness is the whole point. Ignition is not a slow climb to a high temperature: the steady state is lost within that narrow rise, and after it there is no steady state to return to. A body observed to be twenty kelvin above ambient is not comfortably warm; it may be at the edge.</p>
+<p>The critical size is a stability boundary, not a safe size. It is computed for a perfectly uniform body at a fixed ambient temperature with no reactant consumption and no convection, and every one of those idealisations moves the real boundary. Use it to understand how the boundary scales — with the square root of conductivity, inversely with the square root of the rate — rather than as a number to design a store to.</p><h3 id="mod-14">Stirred Reactor</h3>
+<p class="modid">MOD-14</p>
 <p>The S-curve: ignition and extinction turning points of a well-stirred reactor.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -444,11 +590,19 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">T_ext</td><td>Extinction temperature</td><td class="unit">K</td></tr>
 <tr><td class="sym">Da_ext</td><td>Damköhler number at extinction</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether the S-curve is folded at all is settled by the inputs, and the screen says which case you are in. With no fold there are no turning points to report, and it says that rather than reporting two numbers from a failed search.</li>
+<li>The two turning points are reported together, because the distance between them — the hysteresis — is the reading, more than either value is.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The Damköhler numbers here span many decades and only their ratio carries meaning. The definition folds the pre-exponential factor into the group, so the absolute value depends on a kinetic constant that was never entered; comparing one of these numbers against a value from another source without checking that both used the same definition will produce nonsense.</p>
+<p>With a one-step reaction and a cold inlet the ignition branch sits at an enormous Damköhler number, and that is not an artefact. Such a mixture really is essentially inert at the inlet temperature — a one-step Arrhenius rate at 300 K with a combustion activation energy is vanishingly small, so an absurdly long residence time would be needed to ignite it. Real mixtures ignite far earlier through chain branching, which builds radical pools at temperatures where the one-step rate is still negligible. The model is not wrong; it is answering a question about a mixture that does not chain-branch.</p>
+<p>What the screen is genuinely good for is the hysteresis. Once burning, the reactor keeps burning over a range of residence times in which it could never have ignited, and that gap is why a combustor can be stable in operation yet hard to light.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Solved with temperature as the independent variable: the turning points have a vertical tangent in the other direction.</p>
 </div>
 <h3 id="mod-15">Flame Stretch</h3>
-<p class="meta">MOD-15</p>
+<p class="modid">MOD-15</p>
 <p>Markstein length, stretched flame speed, and the stretch rate at extinction.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -463,17 +617,23 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tbody>
 <tr><td class="sym">s</td><td>Stretched flame speed</td><td class="unit">m/s</td></tr>
 <tr><td class="sym">Ka</td><td>Karlovitz number</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">κ_ext</td><td>Extinction stretch rate</td><td class="unit">1/s</td></tr>
+<tr><td class="sym">κ_ext</td><td>Stretch rate at extinction</td><td class="unit">1/s</td></tr>
 <tr><td class="sym">—</td><td>Speed ratio at extinction</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<h3 id="mod-20">Quenching Distance</h3>
-<p class="meta">MOD-20</p>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether an extinction stretch rate exists at all is settled by the sign of the Markstein length. A flame with a positive Markstein length is not extinguished by stretch, and the screen says so rather than returning a negative or infinite stretch rate.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The sign convention is the thing to get right, and it is the easiest thing to get wrong. This app uses the stretch-rate convention with a plus sign, so a negative Markstein length means stretch slows the flame — which is the case for lean hydrogen and for mixtures with a Lewis number below one. Sources using the curvature convention carry the opposite sign for the same physical situation. A Markstein length copied from a paper without checking its convention will produce a flame that speeds up when it should slow down, and nothing in the numbers will look wrong.</p>
+<p>The extinction stretch rate should be read as an order of magnitude. It comes from a linear response extrapolated to the point where the linearity has certainly failed, which is a standard and useful thing to do but not a precise one.</p><h3 id="mod-20">Quenching Distance</h3>
+<p class="modid">MOD-20</p>
 <p>Quenching distance, minimum ignition energy, and their pressure scaling.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">U</td><td>Burning velocity</td><td class="unit">m/s</td></tr>
-<tr><td class="sym">d</td><td>Quenching distance</td><td class="unit">mm at 1 atm</td></tr>
+<tr><td class="sym">d</td><td>Quenching distance at the reference pressure</td><td class="unit">mm</td></tr>
 <tr><td class="sym">α</td><td>Thermal diffusivity</td><td class="unit">m²/s</td></tr>
 <tr><td class="sym">p</td><td>Target pressure</td><td class="unit">atm</td></tr>
 </tbody></table>
@@ -482,16 +642,23 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tbody>
 <tr><td class="sym">U·d</td><td>Velocity–distance product</td><td class="unit">cm²/s</td></tr>
 <tr><td class="sym">Pe</td><td>Quenching Peclet number</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">d</td><td>Distance at the target pressure</td><td class="unit">mm</td></tr>
+<tr><td class="sym">d</td><td>Quenching distance at the target pressure</td><td class="unit">mm</td></tr>
 <tr><td class="sym">—</td><td>Equivalent parallel-plate spacing</td><td class="unit">mm</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>Nothing branches. The reference data table shown beneath the calculation carries independent measurements only, and that selection is a decision made once rather than a control.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The reference table in this screen deserves a note. It holds independent measurements of quenching distance and minimum ignition energy. The same published report also carries an extrapolated column, and that column is deliberately not offered here as a check — its distances were read off a curve from the ignition energies, so the two columns are not independent of one another. Using one to verify the other would be circular, and the circularity would not be visible in the numbers.</p>
+<p>That point generalises. When this screen's cube-law relationship between energy and distance is tested against the independent samples, the spread is real; tested against the extrapolated ones it would look tighter, and the tightness would be an artefact of how the data were produced rather than evidence about the physics. A correlation checked against data derived from the correlation always looks good.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>Quenching distance depends on the apparatus geometry. It is not a material constant.</p>
 <p>In the extrapolated data the distance was read off a curve from the ignition energy: the two columns are not independent.</p>
 </div>
 <h2>Non-premixed &amp; Turbulent</h2>
+<div class="preamble"><p>When fuel and oxidiser arrive separately, mixing becomes the rate-limiting step and the useful coordinate stops being distance and becomes a conserved scalar. Three of these four screens are consequences of that change of variable; the fourth supplies the transport properties the other three need. The unifying assumption is that all species diffuse at the same rate — which is what makes a single scalar sufficient, and which is also the assumption most likely to be the one that fails.</p></div>
 <h3 id="mod-16">Mixture Fraction</h3>
-<p class="meta">MOD-16</p>
+<p class="modid">MOD-16</p>
 <p>Mixture fraction, its stoichiometric value, and the Burke-Schumann flame structure.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -499,36 +666,42 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">x</td><td>Carbon atoms</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">y</td><td>Hydrogen atoms</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">z</td><td>Oxygen atoms</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">Y_F,1</td><td>Fuel in the fuel stream</td><td class="unit">mass fraction</td></tr>
-<tr><td class="sym">Y_O,2</td><td>Oxygen in the oxidiser</td><td class="unit">mass fraction</td></tr>
-<tr><td class="sym">Z</td><td>Mixture fraction</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Y_F,1</td><td>Fuel mass fraction in the fuel stream</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Y_O,2</td><td>Oxygen mass fraction in the oxidiser stream</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">Z</td><td>Mixture fraction at the point of interest</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">Z_st</td><td>Stoichiometric mixture fraction</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">ν</td><td>Stoichiometric mass ratio</td><td class="unit">kg O₂/kg fuel</td></tr>
-<tr><td class="sym">φ</td><td>Equivalence ratio at this Z</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">φ</td><td>Equivalence ratio at this mixture fraction</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Y_F</td><td>Fuel mass fraction</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Y_O</td><td>Oxygen mass fraction</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<h3 id="mod-17">Droplet Combustion</h3>
-<p class="meta">MOD-17</p>
+<h4>Settled without asking</h4>
+<ul>
+<li>Which side of the flame sheet a given mixture fraction lies on is settled by comparing it against the stoichiometric value, and the two mass fractions reported show it directly — whichever is zero names the side.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The stoichiometric mixture fraction being small — around 0.05 for a hydrocarbon in air — is the single most useful number here, and it has a physical reading: the flame sheet sits where the mixture is 95% oxidiser by mass. That is why a diffusion flame's luminous region hugs the air side of the mixing layer, and why fuel-side phenomena such as soot formation happen in a region that is nowhere near the flame sheet.</p>
+<p>The exactly-zero mass fraction is a property of the limit, not a rounding. If you are comparing against a computation with finite-rate chemistry, both will be small but non-zero near the sheet, and the width of that overlap region is a measure of how far the real flame is from this limit.</p><h3 id="mod-17">Droplet Combustion</h3>
+<p class="modid">MOD-17</p>
 <p>Transfer numbers, the square law rate constant, droplet lifetime and flame standoff.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
 <tr><td class="sym">—</td><td>Mode</td><td class="unit">evaporation or combustion</td></tr>
 <tr><td class="sym">T∞</td><td>Ambient temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">Ts</td><td>Surface temperature</td><td class="unit">K</td></tr>
-<tr><td class="sym">cp</td><td>Specific heat</td><td class="unit">J/(kg·K)</td></tr>
-<tr><td class="sym">qv</td><td>Latent heat</td><td class="unit">J/kg</td></tr>
+<tr><td class="sym">Ts</td><td>Droplet surface temperature</td><td class="unit">K</td></tr>
+<tr><td class="sym">cp</td><td>Gas-phase specific heat</td><td class="unit">J/(kg·K)</td></tr>
+<tr><td class="sym">qv</td><td>Latent heat of vaporisation</td><td class="unit">J/kg</td></tr>
 <tr><td class="sym">qc</td><td>Heat of combustion</td><td class="unit">J/kg</td></tr>
-<tr><td class="sym">Y_O∞</td><td>Ambient oxidiser</td><td class="unit">mass fraction</td></tr>
-<tr><td class="sym">ν</td><td>Stoichiometric oxidiser</td><td class="unit">kg/kg</td></tr>
-<tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
+<tr><td class="sym">Y_O∞</td><td>Ambient oxidiser mass fraction</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">ν</td><td>Stoichiometric oxidiser requirement</td><td class="unit">kg/kg</td></tr>
+<tr><td class="sym">λ</td><td>Gas-phase thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
 <tr><td class="sym">ρℓ</td><td>Liquid density</td><td class="unit">kg/m³</td></tr>
-<tr><td class="sym">r₀</td><td>Initial radius</td><td class="unit">μm</td></tr>
+<tr><td class="sym">r₀</td><td>Initial droplet radius</td><td class="unit">μm</td></tr>
 </tbody></table>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -539,12 +712,23 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">τ</td><td>Droplet lifetime</td><td class="unit">ms</td></tr>
 <tr><td class="sym">—</td><td>Flame standoff ratio</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Choices you have to make</h4>
+<ul>
+<li>Evaporation and combustion are a control because they are two different transfer numbers, and the same droplet has a lifetime differing by an order of magnitude between them. The combustion inputs appear only when combustion is selected, so a reader is not asked for a heat of combustion when computing an evaporation rate.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>Both rate constants — radius-based and diameter-based — are shown together rather than behind a choice, because most published values are diameter-based and a reader comparing against one needs to see both to avoid a factor-of-four error.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>Two numbers here are routinely misread. The first is the rate constant: this screen defines it on the radius squared, and most published constants are defined on the diameter squared and are therefore four times larger. Both are shown for exactly that reason. A lifetime computed with a diameter-based constant and a radius-based initial size is wrong by a factor of four and looks entirely plausible.</p>
+<p>The second is the flame standoff ratio. The reaction-sheet prediction puts the flame at ten or more droplet radii; measurements put it far closer, typically a few radii. The discrepancy is not an error in the arithmetic — it is the reaction-sheet assumption failing, together with the constant-property assumption and, in most experiments, buoyant convection. Read the predicted standoff as an upper bound and an indication of which way the assumptions err, not as a measurement to be checked against.</p>
+<p>The surface temperature being fixed at the boiling point is what makes the mass-transfer form of the transfer number diverge, which is why the heat-transfer form is the one reported. This is stated on the screen rather than left for a reader to discover by comparing against a source that uses the other form.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>The surface temperature is taken as the boiling point. The mass-transfer form of B diverges under that simplification.</p>
 <p>The rate constant here is defined on the radius squared: the diameter-based constant is four times larger.</p>
 </div>
 <h3 id="mod-18">Turbulent Regimes</h3>
-<p class="meta">MOD-18</p>
+<p class="modid">MOD-18</p>
 <p>Where a turbulent flame falls on the regime diagram, and the four boundaries.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -562,16 +746,26 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <tr><td class="sym">Da</td><td>Damköhler number</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Ka</td><td>Karlovitz number</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">Ka_δ</td><td>Inner layer Karlovitz number</td><td class="unit">&mdash;</td></tr>
-<tr><td class="sym">ℓ_F</td><td>Flame thickness</td><td class="unit">mm</td></tr>
+<tr><td class="sym">ℓ_F</td><td>Laminar flame thickness</td><td class="unit">mm</td></tr>
 <tr><td class="sym">ℓ_G</td><td>Gibson scale</td><td class="unit">mm</td></tr>
-<tr><td class="sym">—</td><td>Broken-zone boundary Karlovitz number</td><td class="unit">&mdash;</td></tr>
+<tr><td class="sym">—</td><td>Karlovitz number at the broken-zone boundary</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">—</td><td>Regime</td><td class="unit">&mdash;</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Choices you have to make</h4>
+<ul>
+<li>The inner layer fraction is editable rather than baked in, and it is the only editable constant on the screen. It defaults to a methane–air estimate, and it moves the broken-reaction-zone boundary by the inverse square, so a value silently fixed would hide the fact that the boundary a reader is comparing against is mixture-specific.</li>
+</ul>
+<h4>Settled without asking</h4>
+<ul>
+<li>The regime label is an output, not a selection. It follows from where the point lands relative to the boundaries, and a control would let a reader assert a regime and be shown it.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>Read the position, not the label. The boundaries are order-of-magnitude divisions drawn on a log-log plot, and a point a factor of two from one of them is not reliably on either side. What the diagram is genuinely good for is showing how far a condition is from a boundary and which way it moves when you change something — raise the turbulence intensity and watch the point climb toward the broken zone; raise the pressure, which thins the flame, and watch it fall back.</p>
+<p>The inner layer fraction deserves attention before you trust the broken-zone boundary. It enters as the inverse square, so a factor of two in it is a factor of four in the boundary. The default is a methane–air estimate and nothing more; for another fuel it is a guess.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>The inner layer fraction defaults to a methane-air estimate. It is editable because it moves a regime boundary.</p>
 </div>
 <h3 id="mod-19">Transport Properties</h3>
-<p class="meta">MOD-19</p>
+<p class="modid">MOD-19</p>
 <p>Viscosity and thermal conductivity from the official fits, plus the kinetic-theory route.</p>
 <h4>You provide</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
@@ -584,13 +778,20 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <h4>It reports</h4>
 <table><thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
 <tbody>
-<tr><td class="sym">η</td><td>Viscosity</td><td class="unit">Pa·s</td></tr>
+<tr><td class="sym">η</td><td>Dynamic viscosity</td><td class="unit">Pa·s</td></tr>
 <tr><td class="sym">λ</td><td>Thermal conductivity</td><td class="unit">W/(m·K)</td></tr>
 <tr><td class="sym">Pr</td><td>Prandtl number</td><td class="unit">&mdash;</td></tr>
 <tr><td class="sym">α</td><td>Thermal diffusivity</td><td class="unit">m²/s</td></tr>
 <tr><td class="sym">ν</td><td>Kinematic viscosity</td><td class="unit">m²/s</td></tr>
 </tbody></table>
-<div class="limit"><h4>Not covered</h4>
+<h4>Settled without asking</h4>
+<ul>
+<li>Whether a conductivity fit exists for the requested species is settled by the data: some species carry a viscosity fit and no conductivity fit, and the screen reports that rather than returning zero.</li>
+<li>Whether the name refers to a pure species or a binary interaction pair is settled at parse time, and only pure species can be returned.</li>
+</ul>
+<h4>Reading the result</h4>
+<p>The transport file mixes two kinds of record, and this is worth knowing even if you never hit it. Of its 107 records, 41 are binary interaction pairs rather than pure species. Treating a pair as the pure property of its first named member returns a number that is quietly wrong — the right shape, the right magnitude, the wrong quantity. The two kinds are indexed separately here so that a lookup can only ever return a pure species. Before that separation existed the code happened to give correct answers, but only because the pure species happen to precede their pairs in the file; that was luck, not design.</p>
+<p>The Prandtl number, thermal diffusivity and kinematic viscosity are derived using the specific heat and density **you** supplied, not values from the file. They are therefore no better than those two inputs. If you have entered a specific heat for a different temperature than the one you asked for, the viscosity and conductivity will be right and the three derived quantities will not, and nothing on the screen can detect that.</p><div class="limit"><h4>Stated on the screen</h4>
 <p>The kinetic-theory route needs a collision integral, which has no default value in this app.</p>
 </div>
 
@@ -598,7 +799,7 @@ data is bundled, and the full licence and NOTICE for that data.</p>
 <p><a href="../index.html">FlameOne</a> &middot; <a href="../support.html">Support</a> &middot;
 <a href="../privacy.html">Privacy</a> &middot; <a href="../../index.html">All applications</a></p>
 <p>Generated from the application's own module catalogue. Not written by hand, and therefore
-not able to drift from what the application does.</p>
+unable to describe behaviour the application does not have.</p>
 </footer>
 </div></body>
 </html>
