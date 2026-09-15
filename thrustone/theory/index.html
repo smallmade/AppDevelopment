@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ThrustOne Theory Guide</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../manual.css" />
+</head>
+<body>
+<nav aria-label="Product navigation"><a href="../index.html">ThrustOne</a> · <a href="../manual/">User Guide</a> · <a href="../theory/">Theory Guide</a> · <a href="../support.html">Support</a> · <a href="../privacy.html">Privacy</a></nav>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#thrustone-theory-guide"
+id="toc-thrustone-theory-guide">ThrustOne Theory Guide</a>
+<ul>
+<li><a href="#shared-flow-relations"
+id="toc-shared-flow-relations">Shared flow relations</a></li>
+<li><a href="#turbojet-and-turbofan-cycles"
+id="toc-turbojet-and-turbofan-cycles">Turbojet and turbofan
+cycles</a></li>
+<li><a href="#liquid-and-solid-rockets"
+id="toc-liquid-and-solid-rockets">Liquid and solid rockets</a></li>
+<li><a href="#ramjet-scramjet-and-one-dimensional-flow"
+id="toc-ramjet-scramjet-and-one-dimensional-flow">Ramjet, scramjet, and
+one-dimensional flow</a></li>
+<li><a
+href="#thermodynamic-properties-equilibrium-and-finite-rate-chemistry"
+id="toc-thermodynamic-properties-equilibrium-and-finite-rate-chemistry">Thermodynamic
+properties, equilibrium, and finite-rate chemistry</a></li>
+<li><a href="#tbcc-rbcc-and-atr-submodels"
+id="toc-tbcc-rbcc-and-atr-submodels">TBCC, RBCC, and ATR
+submodels</a></li>
+<li><a href="#interpretation"
+id="toc-interpretation">Interpretation</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="thrustone-theory-guide">ThrustOne Theory Guide</h1>
+<p>ThrustOne contains 49 runnable, bounded engineering models. This
+guide explains their governing relations and the conditions attached to
+them. It is an original description of the implemented models; it does
+not reproduce textbook material. For exact inputs, outputs, and limits
+of an individual model, use the in-app capability catalog and current
+model description.</p>
+<p>All calculations use SI internally. Unless a mode explicitly supplies
+variable thermodynamic properties, a gas is modeled with constant
+specific heat and ratio of specific heats. Results apply only within the
+stated model assumptions.</p>
+<h2 id="shared-flow-relations">Shared flow relations</h2>
+<p>For a calorically perfect gas, the principal relations are</p>
+<pre class="text"><code>a = sqrt(γRT)                 M = V/a
+Tt/T = 1 + (γ − 1)M²/2       pt/p = (Tt/T)^(γ/(γ − 1))
+ṁ = ρVA
+J = ṁV + pA</code></pre>
+<p><code>J</code> is the stream momentum function: momentum flux plus
+the absolute-pressure force on a section. It is not thrust. For a nozzle
+exhausting to ambient pressure <code>pa</code>, gross thrust is
+<code>Fgross = ṁVe + (pe − pa)Ae</code>. A net airbreathing result also
+subtracts captured-air flight momentum where the selected full-engine
+model defines captured flow. A nozzle or flow solution is rejected or
+stopped when its selected branch, sonic condition, property range, or
+conservation residual cannot remain valid.</p>
+<h2 id="turbojet-and-turbofan-cycles">Turbojet and turbofan cycles</h2>
+<p>Design-point cycle models connect inlet, compressor or fan,
+combustor, turbine, and nozzle station states. Constant-cp modes use
+component pressure ratios, efficiencies, prescribed losses, and
+shaft-work balance. Typical component relations include compressor work
+<code>wc = cp(Tt,out − Tt,in)</code>, turbine work
+<code>wt = cp(Tt,in − Tt,out)</code>, and fuel addition from the
+selected combustor energy balance.</p>
+<p>Turbojet modes include ideal and loss-based design points,
+afterburning, a fixed-area double-choked off-design reference model,
+dual-spool afterburning off-design, and standalone inlet, compressor,
+burner, turbine, nozzle, and compressor-map calculations. Map
+interpolation is shape-preserving and never extrapolates.</p>
+<p>Turbofan modes include separate-flow single-spool design,
+reference-normalized dual-spool separate-flow off-design, constant-cp
+dual-spool mixed flow with optional afterburning, standalone components,
+and NASA9 variable-property design modes. Separate-flow results
+normalize specific thrust by total inlet air and fuel-air ratio by core
+air. Mixed-flow models explicitly conserve mass, total enthalpy, and
+momentum; a constant-area mixer uses the subsonic conservation root and
+rejects incompatible static-pressure or root conditions.</p>
+<p>Ideal-cycle models use a single gas, neglect fuel mass addition, and
+assume fully expanded streams. They are not component-map or
+fixed-geometry off-design models unless that is the selected mode.
+Variable-property modes use dry air at 79 mol% N2 and 21 mol% O2,
+gaseous H2/CH4/CO fuel, adiabatic gas-phase equilibrium combustion, and
+frozen downstream composition. They use variable-area fully expanded
+exits, exclude liquid vaporization, cooling, and condensation, and do
+not claim map or fixed-geometry matching. Optional core-stream
+afterburning is downstream of the turbine and does not alter shaft
+load.</p>
+<h2 id="liquid-and-solid-rockets">Liquid and solid rockets</h2>
+<p>Liquid-rocket performance uses chamber pressure <code>pc</code>,
+throat area <code>At</code>, mass flow <code>ṁ</code>, characteristic
+velocity, thrust coefficient, and specific impulse:</p>
+<pre class="text"><code>c* = pc At / ṁ
+CF = F / (pc At)
+Isp = F / (ṁg0)</code></pre>
+<p>Explicit-gas modes provide thrust-chamber and nozzle performance,
+altitude, area-ratio, and chamber-pressure sweeps, chamber sizing,
+finite contraction, and reference contours. Sweeps hold the reference
+scale and explicit gas model fixed. Empirical efficiency affects
+<code>c*</code> or <code>CF</code>, not the reference ideal exit
+velocity. Exit-plane pressure is not a wall-pressure, separation, or
+side-load prediction. Conical and bell outputs are reference geometry;
+bell geometry is an arc–parabola construction with explicit endpoint
+angles.</p>
+<p>Thermochemical rocket modes use NASA9 gas properties. They can close
+chamber temperature from supplied gaseous inlet enthalpy and
+equilibrium, or use a specified chamber condition; downstream expansion
+can be frozen, along-path equilibrium, or frozen at a chosen post-throat
+area ratio. Equilibrium solutions retain elemental inventory and
+determine critical mass flow from the internal maximum of
+<code>ρV</code>. <code>frozen_mach</code> uses local frozen sound speed.
+These are ideal-gas gas-phase models without liquid vaporization,
+condensed phases, wall-pressure prediction, post-separation performance,
+or side loads.</p>
+<p>Gaseous mixture-ratio sweeps use H2/CH4/CO and O2. <code>MR</code> is
+oxidizer mass divided by fuel mass. Each point uses the same selected
+chemical model, geometry, and back pressure. The reported best specific
+impulse is only the largest successful discrete sample.</p>
+<p>Solid-rocket equilibrium pressure balances a supplied burn-rate law
+with choked mass discharge. Transient models integrate end-burning or
+internal-port regression and chamber mass conservation. They begin from
+an established choked state; they exclude ignition, erosion, and
+tail-off. Demonstration parameters are not a propellant model.</p>
+<h2 id="ramjet-scramjet-and-one-dimensional-flow">Ramjet, scramjet, and
+one-dimensional flow</h2>
+<p>Ramjet models include a design-point cycle, a full
+subsonic-combustion flowpath, normal and oblique shocks, Fanno flow,
+Rayleigh flow, and quasi-one-dimensional flow. Oblique shock mode
+requires an explicit weak or strong branch and stops beyond the
+attached-shock limit. Fanno uses Darcy <code>fD L/D</code>; Rayleigh
+uses a supplied total-temperature ratio. The full flowpath uses
+specified inlet recovery, a source-term combustor, and a nozzle whose
+exit area is calculated from specified exit pressure. It is not
+fixed-geometry back-pressure matching.</p>
+<p>Fixed-cp quasi-one-dimensional models integrate mass, momentum, and
+total-energy effects of area change, Darcy friction, heat input, and
+mass injection. NASA9 frozen-flow mode updates properties and sound
+speed at every step, requires injection with the same composition as the
+main stream, and includes formation enthalpy in injection total
+enthalpy. Both retain valid history when a sonic, residual, or
+property-range event occurs.</p>
+<p>Scramjet fixed-cp full-engine, combustor, and nozzle models use the
+same source-term flow framework. They do not provide reaction kinetics,
+shock trains, cooling coupling, or automatic mode transition. The
+seven-state NASA9 reconstruction accepts T/P/M, T/P/V, T/ρ/M, T/ρ/V,
+P/ρ/M, P/ρ/V, or F/G/ṁ, where</p>
+<pre class="text"><code>F = pA + ṁV
+G = h + V²/2</code></pre>
+<p>Here <code>F</code> is the model’s momentum-function input, with the
+same convention as <code>J = pA + ṁV</code> above; it is not a thrust
+input. F/G requires an explicit subsonic or supersonic root. In the
+fixed-cp form, <code>G = cpT + V²/2</code>; it must not receive
+formation-enthalpy data.</p>
+<p>The calibrated variable-property inlet uses NASA9 dry air and either
+altitude plus Mach, Mach plus dynamic pressure, or altitude plus dynamic
+pressure. It supports contraction ratio, exit Mach, exit pressure, exit
+temperature, or total-pressure-recovery closure, and an explicit high-
+or low-Mach contraction root. Its atmosphere range is 0–70 km and it is
+an independent inlet model, not a complete reacting-flow match.</p>
+<p>Calibrated full-engine models join a dry-air inlet, combustor, and
+nozzle with supplied geometry. Nonreacting mixing and finite-rate
+variants are available. Net thrust subtracts captured-air flight
+momentum; <code>specific_impulse_injected</code> uses all injected mass.
+The models do not automatically match ambient back pressure, shock
+trains, or operating-mode transition, and they report no full-engine
+thrust when a segment is incomplete.</p>
+<h2
+id="thermodynamic-properties-equilibrium-and-finite-rate-chemistry">Thermodynamic
+properties, equilibrium, and finite-rate chemistry</h2>
+<p>NASA9 frozen-property models use archived NASA/TP-2002-211556 species
+data in the common 200–6000 K range of selected species. Mixture
+enthalpy includes formation enthalpy; <code>cp</code>, <code>cv</code>,
+<code>γ</code>, and entropy follow the selected frozen composition.
+Property calculation is not chemical equilibrium.</p>
+<p>Gas-equilibrium modes solve ideal-gas equilibrium subject to
+elemental conservation. The current model contains 13 gas species and
+excludes ions and condensed phases. Constant-pressure energy closure
+solves for equilibrium temperature from inlet gaseous composition, inlet
+temperature, pressure, and heat per unit mixture mass; zero heat is the
+adiabatic case. A user-provided temperature interval must bracket the
+root.</p>
+<p>Finite-rate reactor mode is a constant-volume, externally isothermal
+mass-action system. It integrates reactions of the form</p>
+<pre class="text"><code>dcᵢ/dt = Σνᵢⱼ(kf Πcr^νr − kr Πcp^νp)
+kf = A T^n exp(−Ea/RuT)</code></pre>
+<p>User-supplied reactions and Arrhenius data define the model. The
+default dissociation data demonstrate the algorithm only. The optional
+hydrogen–oxygen submechanism has 10 species and 29 reactions, including
+third-body efficiencies and Lindemann/Troe falloff. It uses NASA7 data
+over the common 300–3500 K range. It is not a full GRI-Mech or a
+reproduction of another solver. Finite-rate reacting-flow mode couples
+species mass flow, momentum, and total energy in a quasi-one-dimensional
+segment; it omits transport, diffusion, and automatic transonic
+matching.</p>
+<h2 id="tbcc-rbcc-and-atr-submodels">TBCC, RBCC, and ATR submodels</h2>
+<p>TBCC combines independent turbojet and ramjet results using an
+explicit captured-air split. It does not solve common-inlet matching,
+variable geometry, back-pressure interaction, or transition control.</p>
+<p>RBCC is an ideal constant-area ejector-ramjet submodel with specified
+primary total state, supersonic primary flow, subsonic secondary flow, a
+choked ejector exit, and fully expanded output. It is not a full RBCC
+multimode cycle.</p>
+<p>ATR is an ideal air-turboramjet submodel with specified primary total
+state, ideal turbine–fan work balance, low-speed mixing, simplified heat
+addition, and fully expanded output. It excludes gas-generator, pump,
+and cooling models.</p>
+<h2 id="interpretation">Interpretation</h2>
+<p>No model should be treated as an engine certification, a full
+operating envelope, or a substitute for experimental validation.
+Demonstration cases are workflow examples. The in-app mode description
+identifies the active calculation and its limits; exported results
+preserve that model mode and the SI input state used to obtain them.</p>
+</body>
+</html>
