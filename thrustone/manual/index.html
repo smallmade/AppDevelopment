@@ -9,6 +9,152 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
@@ -24,28 +170,16 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../manual.css" />
 </head>
 <body>
-<nav aria-label="Product navigation"><a href="../index.html">ThrustOne</a> · <a href="../manual/">User Guide</a> · <a href="../theory/">Theory Guide</a> · <a href="../support.html">Support</a> · <a href="../privacy.html">Privacy</a></nav>
+<header id="title-block-header">
+<h1 class="title">ThrustOne User Guide</h1>
+</header>
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#thrustone-user-guide"
 id="toc-thrustone-user-guide">ThrustOne User Guide</a>
 <ul>
-<li><a href="#getting-started" id="toc-getting-started">Getting
-started</a></li>
-<li><a href="#requirements" id="toc-requirements">Requirements</a></li>
-<li><a href="#available-calculations"
-id="toc-available-calculations">Available calculations</a></li>
-<li><a href="#freestream-and-model-limits"
-id="toc-freestream-and-model-limits">Freestream and model
-limits</a></li>
-<li><a href="#cases-and-files" id="toc-cases-and-files">Cases and
-files</a></li>
-<li><a href="#studies-and-exports" id="toc-studies-and-exports">Studies
-and exports</a></li>
-<li><a href="#scope" id="toc-scope">Scope</a></li>
 <li><a href="#current-mode-reference"
 id="toc-current-mode-reference">Current Mode Reference</a>
 <ul>
@@ -209,72 +343,63 @@ Nozzle · Frozen Constant-Specific-Heat Flow</a></li>
 </ul>
 </nav>
 <h1 id="thrustone-user-guide">ThrustOne User Guide</h1>
-<p>ThrustOne requires macOS 12 or later and is designed for Apple
-silicon Macs.</p>
+<p>ThrustOne supports Apple silicon Macs running macOS 12 or later, and
+iPads running iPadOS 16 or later.</p>
 <p>This guide is generated from the capability catalog, field catalog,
 model descriptions, and demonstration cases. Demonstration results help
 identify controls and workflows; they do not represent a specific engine
 design, performance certification, or full-envelope prediction.</p>
 <p>ThrustOne Engine Performance Calculator</p>
-<h2 id="getting-started">Getting started</h2>
-<p>Choose an engine and analysis task, adjust the conditions, then
-select Calculate (Command-Return). Return or leaving a field commits its
-value; Escape restores it. Decimal numbers, scientific notation, and the
-Unicode minus sign are accepted. Units appear beside fields. Internal
-calculations and exports use SI values. A curve and its results always
-belong to one complete input state. A changed input makes earlier
-results stale; recalculate before exporting.</p>
-<h2 id="requirements">Requirements</h2>
-<p>ThrustOne requires macOS 12 or later and is designed for Apple
-silicon Macs.</p>
-<h2 id="available-calculations">Available calculations</h2>
-<ul>
-<li>Turbojet: ideal and loss-based design points, afterburning,
-explicit-reference double-choked and dual-spool afterburning off-design
-points, and five standalone components. Compressor map files use
-shape-preserving interpolation and are never extrapolated.</li>
-<li>Turbofan: separate-flow single-spool design, reference-normalized
-dual-spool separate-flow off-design, and constant-cp dual-spool
-mixed-flow or mixed-afterburning analyses. Constant-cp mixing matches
-inlet static pressure and uses the subsonic conservation root. NASA9
-variable-cp design analyses include separate flow, mixed flow, and
-independent post-mixer afterburning. Specific thrust uses total inlet
-air; fuel-air ratio uses core air. Ideal modes neglect fuel mass
-addition and assume fully expanded streams.</li>
-<li>Liquid rocket: thrust-chamber and nozzle performance with explicit
-gas properties; altitude, area-ratio, and chamber-pressure sweeps at
-fixed reference scale; equivalent cylindrical sizing;
-cylinder-plus-convergent volume allocation; a standalone
-finite-contraction static chamber plane; and conical or bell reference
-geometry. Mixture-ratio sweeps never combine values based on different
-chemical assumptions.</li>
-<li>Ramjet: full-engine design point, normal shock, explicit weak or
-strong oblique shock, Darcy Fanno friction, same-branch Rayleigh
-heating, and fixed-cp quasi-one-dimensional flow. Flow segments support
-area, Darcy friction, heat flow, and injected mass. They stop at sonic
-events or residual limits and retain valid history.</li>
-<li>Solid rocket: equilibrium pressure from a supplied burn-rate law and
-end-burning or internal-port regression transients. Demonstration
-parameters do not represent a specific propellant. Models start from an
-established choked state and exclude ignition, erosion, and tail-off
-blowdown.</li>
-<li>TBCC: independent turbojet and ramjet channels combined with an
-explicit air split. The shared freestream is defined in turbojet fields.
-Common-inlet matching, variable geometry, and automatic transition are
-not solved.</li>
-<li>RBCC: an ideal ejector-ramjet submodel with specified primary total
-state, supersonic primary flow, subsonic secondary flow, and a choked
-ejector exit. It is not a full multimode RBCC cycle.</li>
-<li>ATR: an ideal air-turboramjet submodel with specified primary total
-state, ideal work balance, low-speed mixing, and simplified heating. It
-excludes a gas generator, pump, and cooling.</li>
-</ul>
-<h2 id="freestream-and-model-limits">Freestream and model limits</h2>
-<p>Turbojet input supports Mach plus ambient state, altitude plus Mach,
-Mach plus dynamic pressure, and altitude plus dynamic pressure. Altitude
-is geometric; the standard atmosphere is valid from 0 to 86 km. Legacy
-JSON altitude values in km convert to m on import. The dynamic-pressure
-path uses standard air with γ = 1.4.</p>
+<p>Getting started Choose an engine and analysis task, adjust the
+conditions, then select Calculate (Command-Return). Return or leaving a
+field commits its value; Escape restores it. Decimal numbers, scientific
+notation, and the Unicode minus sign are accepted. Units appear beside
+fields. Internal calculations and exports use SI values. A curve and its
+results always belong to one complete input state. A changed input makes
+earlier results stale; recalculate before exporting.</p>
+<p>Requirements ThrustOne supports Apple silicon Macs running macOS 12
+or later, and iPads running iPadOS 16 or later.</p>
+<p>Available calculations • Turbojet: ideal and loss-based design
+points, afterburning, explicit-reference double-choked and dual-spool
+afterburning off-design points, and five standalone components.
+Compressor map files use shape-preserving interpolation and are never
+extrapolated. • Turbofan: separate-flow single-spool design,
+reference-normalized dual-spool separate-flow off-design, and
+constant-cp dual-spool mixed-flow or mixed-afterburning analyses.
+Constant-cp mixing matches inlet static pressure and uses the subsonic
+conservation root. NASA9 variable-cp design analyses include separate
+flow, mixed flow, and independent post-mixer afterburning. Specific
+thrust uses total inlet air; fuel-air ratio uses core air. Ideal modes
+neglect fuel mass addition and assume fully expanded streams. • Liquid
+rocket: thrust-chamber and nozzle performance with explicit gas
+properties; altitude, area-ratio, and chamber-pressure sweeps at fixed
+reference scale; equivalent cylindrical sizing; cylinder-plus-convergent
+volume allocation; a standalone finite-contraction static chamber plane;
+and conical or bell reference geometry. Mixture-ratio sweeps never
+combine values based on different chemical assumptions. • Ramjet:
+full-engine design point, normal shock, explicit weak or strong oblique
+shock, Darcy Fanno friction, same-branch Rayleigh heating, and fixed-cp
+quasi-one-dimensional flow. Flow segments support area, Darcy friction,
+heat flow, and injected mass. They stop at sonic events or residual
+limits and retain valid history. • Solid rocket: equilibrium pressure
+from a supplied burn-rate law and end-burning or internal-port
+regression transients. Demonstration parameters do not represent a
+specific propellant. Models start from an established choked state and
+exclude ignition, erosion, and tail-off blowdown. • TBCC: independent
+turbojet and ramjet channels combined with an explicit air split. The
+shared freestream is defined in turbojet fields. Common-inlet matching,
+variable geometry, and automatic transition are not solved. • RBCC: an
+ideal ejector-ramjet submodel with specified primary total state,
+supersonic primary flow, subsonic secondary flow, and a choked ejector
+exit. It is not a full multimode RBCC cycle. • ATR: an ideal
+air-turboramjet submodel with specified primary total state, ideal work
+balance, low-speed mixing, and simplified heating. It excludes a gas
+generator, pump, and cooling.</p>
+<p>Freestream and model limits Turbojet input supports Mach plus ambient
+state, altitude plus Mach, Mach plus dynamic pressure, and altitude plus
+dynamic pressure. Altitude is geometric; the standard atmosphere is
+valid from 0 to 86 km. Legacy JSON altitude values in km convert to m on
+import. The dynamic-pressure path uses standard air with γ = 1.4.</p>
 <p>Ideal cycles use one gas and neglect fuel mass addition. Other
 constant-cp cycles use supplied cold- and hot-side heat capacities and
 component losses. Constant-cp calculation is not chemical equilibrium.
@@ -282,26 +407,24 @@ Liquid-rocket empirical efficiencies correct characteristic velocity or
 thrust coefficient; they do not change the ideal reference exit
 velocity. Exit-plane static pressure is not a validated wall-pressure or
 side-load prediction.</p>
-<h2 id="cases-and-files">Cases and files</h2>
-<p>Open and save native JSON cases up to 10 MiB and 64 nesting levels.
-Version 2 uses engine, mode, and the associated input section.
-Unsupported modes report an error; they are never silently replaced.
-Some legacy turbojet cases and rocket cases with explicit reference
-conditions can import; other thermodynamic-table branches have not been
-migrated.</p>
+<p>Cases and files Open and save native JSON cases up to 10 MiB and 64
+nesting levels. Version 2 uses engine, mode, and the associated input
+section. Unsupported modes report an error; they are never silently
+replaced. Some legacy turbojet cases and rocket cases with explicit
+reference conditions can import; other thermodynamic-table branches have
+not been migrated.</p>
 <p>Edits in JSON Interchange update the form only after Apply JSON.
 Restore Form Contents discards unapplied text, which is not written to
 the saved case. Unknown fields are retained as extension data; known
 fields in this version determine the calculation. The File menu provides
 Save, Save As, Close, and multiple windows.</p>
-<h2 id="studies-and-exports">Studies and exports</h2>
-<p>Parameter Study operates on currently exposed independent fields. It
-accepts linear endpoints or explicit value lists, one- or
-two-dimensional grids, and at most 1,000 total cases. It shows progress
-and can be cancelled while retaining completed work. Failed rows retain
-their error. Liquid-rocket plots do not join across failed points.
-History tables show the first 100 points; JSON, CSV, and graphic exports
-retain all data.</p>
+<p>Studies and exports Parameter Study operates on currently exposed
+independent fields. It accepts linear endpoints or explicit value lists,
+one- or two-dimensional grids, and at most 1,000 total cases. It shows
+progress and can be cancelled while retaining completed work. Failed
+rows retain their error. Liquid-rocket plots do not join across failed
+points. History tables show the first 100 points; JSON, CSV, and graphic
+exports retain all data.</p>
 <p>Study axes, explicit lists, and the two-dimensional switch are saved
 with a case. The comparison metric and maximum/minimum choice are view
 state. Grid extrema cover only successful computed points; they are
@@ -341,12 +464,11 @@ results cannot be exported as current results.</p>
 <p>Offline and privacy Calculations run locally. ThrustOne does not
 connect to remote services, upload cases, or use model APIs. Files are
 saved only where you choose.</p>
-<h2 id="scope">Scope</h2>
-<p>ThrustOne provides 49 runnable calculation models across turbojets,
-turbofans, liquid and solid rockets, ramjets, scramjets, TBCC, RBCC, and
-ATR. The capability catalog and current mode description state each
-model’s conditions and limits. Interpret results only within the
-selected model. Demonstration inputs explain operation; they do not
+<p>Scope ThrustOne provides 49 runnable calculation models across
+turbojets, turbofans, liquid and solid rockets, ramjets, scramjets,
+TBCC, RBCC, and ATR. The capability catalog and current mode description
+state each model’s conditions and limits. Interpret results only within
+the selected model. Demonstration inputs explain operation; they do not
 represent a specific engine design, performance certification, or
 full-envelope prediction.</p>
 <p>The form footer can switch display between SI and engineering units
@@ -501,6 +623,11 @@ mass flow without chemical reaction. Total-pressure recovery is a
 separate loss downstream of the mixer and does not alter its momentum
 conservation. This component is not a mixed-flow full-engine match or
 FAIR/VSH validation.</p>
+<p>Offline theory manual Choose Open Theory Manual in Help to read the
+bundled English reference. Search for a term, move between matches,
+follow the PDF contents links, or enter a page number. No internet
+connection is required. Each chapter states its assumptions, equations
+and interpretation limits.</p>
 <h2 id="current-mode-reference">Current Mode Reference</h2>
 <h3
 id="turbojet-variable-specific-heat-gaseous-fuel-design-point">Turbojet
@@ -659,7 +786,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Burner Energy Residual (<code>burner_energy_residual</code>)</td>
 <td>J/kg</td>
-<td style="text-align: right;">0.0036952906</td>
+<td style="text-align: right;">0.0036952903</td>
 </tr>
 <tr>
 <td>Bypass Ratio (<code>bypass_ratio</code>)</td>
@@ -754,7 +881,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Shaft Energy Residual (<code>shaft_energy_residual</code>)</td>
 <td>J/kg</td>
-<td style="text-align: right;">4.0745363e-10</td>
+<td style="text-align: right;">4.6566129e-10</td>
 </tr>
 <tr>
 <td>Specific Thrust (<code>specific_thrust</code>)</td>
@@ -1201,7 +1328,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Eta Overall (<code>eta_overall</code>)</td>
 <td>1</td>
-<td style="text-align: right;">0.2204159</td>
+<td style="text-align: right;">0.27815112</td>
 </tr>
 <tr>
 <td>Eta T (<code>eta_t</code>)</td>
@@ -1271,12 +1398,12 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Specific Thrust (<code>specific_thrust</code>)</td>
 <td>N·s/kg</td>
-<td style="text-align: right;">822.85188</td>
+<td style="text-align: right;">1038.3877</td>
 </tr>
 <tr>
 <td>T9 Over T0 (<code>t9_over_t0</code>)</td>
 <td>1</td>
-<td style="text-align: right;">3.8640486</td>
+<td style="text-align: right;">5.1329199</td>
 </tr>
 <tr>
 <td>Tau C (<code>tau_c</code>)</td>
@@ -1301,12 +1428,12 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Thrust-Specific Fuel Consumption (<code>tsfc</code>)</td>
 <td>kg/(N·s)</td>
-<td style="text-align: right;">6.2541689e-05</td>
+<td style="text-align: right;">4.9560049e-05</td>
 </tr>
 <tr>
 <td>V9 Over A0 (<code>v9_over_a0</code>)</td>
 <td>1</td>
-<td style="text-align: right;">4.230796</td>
+<td style="text-align: right;">4.8762172</td>
 </tr>
 </tbody>
 </table>
@@ -1652,7 +1779,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Area Ratio 9 (<code>area_ratio_9</code>)</td>
 <td>1</td>
-<td style="text-align: right;">0.99981696</td>
+<td style="text-align: right;">1.0000982</td>
 </tr>
 <tr>
 <td>Corrected Flow Ratio (<code>corrected_flow_ratio</code>)</td>
@@ -2262,7 +2389,7 @@ component changes. All table values are SI.</p>
 <td>Afterburner Mass Residual
 (<code>afterburner_mass_residual</code>)</td>
 <td>1</td>
-<td style="text-align: right;">2.220446e-16</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr>
 <td>Afterburner Temperature (<code>afterburner_temperature</code>)</td>
@@ -2277,7 +2404,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Burner Energy Residual (<code>burner_energy_residual</code>)</td>
 <td>J/kg</td>
-<td style="text-align: right;">0.00019769684</td>
+<td style="text-align: right;">0.00019769655</td>
 </tr>
 <tr>
 <td>Bypass Ratio (<code>bypass_ratio</code>)</td>
@@ -2372,7 +2499,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Shaft Energy Residual (<code>shaft_energy_residual</code>)</td>
 <td>J/kg</td>
-<td style="text-align: right;">1.0477379e-09</td>
+<td style="text-align: right;">8.1490725e-10</td>
 </tr>
 <tr>
 <td>Specific Thrust (<code>specific_thrust</code>)</td>
@@ -8510,7 +8637,7 @@ component changes. All table values are SI.</p>
 <td>Element Relative Residual
 (<code>element_relative_residual</code>)</td>
 <td>1</td>
-<td style="text-align: right;">1.0928107e-15</td>
+<td style="text-align: right;">2.4041836e-15</td>
 </tr>
 <tr>
 <td>Enthalpy (<code>enthalpy</code>)</td>
@@ -8555,7 +8682,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Flow Momentum Residual (<code>flow_momentum_residual</code>)</td>
 <td>N</td>
-<td style="text-align: right;">-8.5265128e-14</td>
+<td style="text-align: right;">7.1054274e-14</td>
 </tr>
 <tr>
 <td>Specific Heat Ratio γ (<code>gamma</code>)</td>
@@ -8601,7 +8728,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Mass Relative Residual (<code>mass_relative_residual</code>)</td>
 <td>1</td>
-<td style="text-align: right;">9.1710531e-16</td>
+<td style="text-align: right;">2.2010527e-15</td>
 </tr>
 <tr>
 <td>Mole Fraction Ar (<code>mole_fraction_Ar</code>)</td>
@@ -9559,7 +9686,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Thermostat Heat Rate (<code>thermostat_heat_rate</code>)</td>
 <td>W/m³</td>
-<td style="text-align: right;">3262426.3</td>
+<td style="text-align: right;">3171942.5</td>
 </tr>
 <tr>
 <td>Time (<code>time</code>)</td>
