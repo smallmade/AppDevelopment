@@ -359,6 +359,15 @@ results always belong to one complete input state. A changed input makes
 earlier results stale; recalculate before exporting.</p>
 <p>Requirements ThrustOne supports Apple silicon Macs running macOS 12
 or later, and iPads running iPadOS 16 or later.</p>
+<p>Opening and saving cases Native ThrustOne documents use the
+.thrustone extension and contain ordinary JSON. On Mac, Open case opens
+a separate .thrustone or JSON document; Save case exports the current
+case as JSON. On iPad, use the document browser to open or create
+separate .thrustone cases. The Case actions menu offers Save Case As and
+Import into Current Case; importing accepts .thrustone or JSON,
+validates it first, and explicitly asks before replacing and saving the
+current document. Cancel keeps its existing contents. Results and chart
+exports use the native file picker on both platforms.</p>
 <p>Available calculations • Turbojet: ideal and loss-based design
 points, afterburning, explicit-reference double-choked and dual-spool
 afterburning off-design points, and five standalone components.
@@ -786,7 +795,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Burner Energy Residual (<code>burner_energy_residual</code>)</td>
 <td>J/kg</td>
-<td style="text-align: right;">0.0036952903</td>
+<td style="text-align: right;">0.0036952906</td>
 </tr>
 <tr>
 <td>Bypass Ratio (<code>bypass_ratio</code>)</td>
@@ -881,7 +890,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Shaft Energy Residual (<code>shaft_energy_residual</code>)</td>
 <td>J/kg</td>
-<td style="text-align: right;">4.6566129e-10</td>
+<td style="text-align: right;">4.0745363e-10</td>
 </tr>
 <tr>
 <td>Specific Thrust (<code>specific_thrust</code>)</td>
@@ -1052,6 +1061,11 @@ component changes. All table values are SI.</p>
 </tbody>
 </table>
 <table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
 <thead>
 <tr>
 <th>Output</th>
@@ -1061,17 +1075,17 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Eta C (<code>eta_c</code>)</td>
+<td>Compressor Isentropic Efficiency (<code>eta_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.86406619</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.31186254</td>
 </tr>
 <tr>
-<td>Eta T (<code>eta_t</code>)</td>
+<td>Turbine Isentropic Efficiency (<code>eta_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.90988422</td>
 </tr>
@@ -1081,42 +1095,42 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.035674253</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.2528658</td>
 </tr>
 <tr>
-<td>Npr (<code>npr</code>)</td>
+<td>Nozzle Total/Static Pressure Ratio (<code>npr</code>)</td>
 <td>1</td>
 <td style="text-align: right;">11.622222</td>
 </tr>
 <tr>
-<td>Pi B (<code>pi_b</code>)</td>
+<td>Combustor Total-Pressure Ratio (<code>pi_b</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.94</td>
 </tr>
 <tr>
-<td>Pi C (<code>pi_c</code>)</td>
+<td>Compressor Total-Pressure Ratio (<code>pi_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10</td>
 </tr>
 <tr>
-<td>Pi D (<code>pi_d</code>)</td>
+<td>Inlet Total-Pressure Recovery (<code>pi_d</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.87875</td>
 </tr>
 <tr>
-<td>Pi N (<code>pi_n</code>)</td>
+<td>Nozzle Total-Pressure Ratio (<code>pi_n</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.96</td>
 </tr>
 <tr>
-<td>Pi R (<code>pi_r</code>)</td>
+<td>Freestream Total/Static Pressure Ratio (<code>pi_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">7.8244491</td>
 </tr>
 <tr>
-<td>Pi T (<code>pi_t</code>)</td>
+<td>Turbine Total-Pressure Ratio (<code>pi_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.37462865</td>
 </tr>
@@ -1126,27 +1140,29 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">807.05953</td>
 </tr>
 <tr>
-<td>T9 Over T0 (<code>t9_over_t0</code>)</td>
+<td>Exit Static Temperature / Ambient Temperature
+(<code>t9_over_t0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">3.8460757</td>
 </tr>
 <tr>
-<td>Tau C (<code>tau_c</code>)</td>
+<td>Compressor Total-Temperature Ratio (<code>tau_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.0771139</td>
 </tr>
 <tr>
-<td>Tau Lambda (<code>tau_lambda</code>)</td>
+<td>Turbine-Inlet Enthalpy / Ambient Enthalpy
+(<code>tau_lambda</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10.250645</td>
 </tr>
 <tr>
-<td>Tau R (<code>tau_r</code>)</td>
+<td>Freestream Total/Static Temperature Ratio (<code>tau_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.8</td>
 </tr>
 <tr>
-<td>Tau T (<code>tau_t</code>)</td>
+<td>Turbine Total-Temperature Ratio (<code>tau_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.81553049</td>
 </tr>
@@ -1156,7 +1172,8 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">4.4202753e-05</td>
 </tr>
 <tr>
-<td>V9 Over A0 (<code>v9_over_a0</code>)</td>
+<td>Exit Velocity / Freestream Sound Speed
+(<code>v9_over_a0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">4.2505357</td>
 </tr>
@@ -1312,6 +1329,11 @@ component changes. All table values are SI.</p>
 </tbody>
 </table>
 <table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
 <thead>
 <tr>
 <th>Output</th>
@@ -1321,27 +1343,27 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Eta C (<code>eta_c</code>)</td>
+<td>Compressor Isentropic Efficiency (<code>eta_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.86406619</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.27815112</td>
 </tr>
 <tr>
-<td>Eta T (<code>eta_t</code>)</td>
+<td>Turbine Isentropic Efficiency (<code>eta_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.90988422</td>
 </tr>
 <tr>
-<td>F Ab (<code>f_ab</code>)</td>
+<td>Afterburner Fuel / Core Air (<code>f_ab</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.015788294</td>
 </tr>
 <tr>
-<td>F Main (<code>f_main</code>)</td>
+<td>Main Fuel / Core Air (<code>f_main</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.035674253</td>
 </tr>
@@ -1351,12 +1373,12 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.051462547</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.2407116</td>
 </tr>
 <tr>
-<td>Npr (<code>npr</code>)</td>
+<td>Nozzle Total/Static Pressure Ratio (<code>npr</code>)</td>
 <td>1</td>
 <td style="text-align: right;">11.389778</td>
 </tr>
@@ -1366,32 +1388,32 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.98</td>
 </tr>
 <tr>
-<td>Pi B (<code>pi_b</code>)</td>
+<td>Combustor Total-Pressure Ratio (<code>pi_b</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.94</td>
 </tr>
 <tr>
-<td>Pi C (<code>pi_c</code>)</td>
+<td>Compressor Total-Pressure Ratio (<code>pi_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10</td>
 </tr>
 <tr>
-<td>Pi D (<code>pi_d</code>)</td>
+<td>Inlet Total-Pressure Recovery (<code>pi_d</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.87875</td>
 </tr>
 <tr>
-<td>Pi N (<code>pi_n</code>)</td>
+<td>Nozzle Total-Pressure Ratio (<code>pi_n</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.96</td>
 </tr>
 <tr>
-<td>Pi R (<code>pi_r</code>)</td>
+<td>Freestream Total/Static Pressure Ratio (<code>pi_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">7.8244491</td>
 </tr>
 <tr>
-<td>Pi T (<code>pi_t</code>)</td>
+<td>Turbine Total-Pressure Ratio (<code>pi_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.37462865</td>
 </tr>
@@ -1401,27 +1423,29 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1038.3877</td>
 </tr>
 <tr>
-<td>T9 Over T0 (<code>t9_over_t0</code>)</td>
+<td>Exit Static Temperature / Ambient Temperature
+(<code>t9_over_t0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">5.1329199</td>
 </tr>
 <tr>
-<td>Tau C (<code>tau_c</code>)</td>
+<td>Compressor Total-Temperature Ratio (<code>tau_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.0771139</td>
 </tr>
 <tr>
-<td>Tau Lambda (<code>tau_lambda</code>)</td>
+<td>Turbine-Inlet Enthalpy / Ambient Enthalpy
+(<code>tau_lambda</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10.250645</td>
 </tr>
 <tr>
-<td>Tau R (<code>tau_r</code>)</td>
+<td>Freestream Total/Static Temperature Ratio (<code>tau_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.8</td>
 </tr>
 <tr>
-<td>Tau T (<code>tau_t</code>)</td>
+<td>Turbine Total-Temperature Ratio (<code>tau_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.81553049</td>
 </tr>
@@ -1431,7 +1455,8 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">4.9560049e-05</td>
 </tr>
 <tr>
-<td>V9 Over A0 (<code>v9_over_a0</code>)</td>
+<td>Exit Velocity / Freestream Sound Speed
+(<code>v9_over_a0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">4.8762172</td>
 </tr>
@@ -1526,12 +1551,12 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.9</td>
 </tr>
 <tr>
-<td>Eta C (<code>eta_c</code>)</td>
+<td>Compressor Isentropic Efficiency (<code>eta_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.86406619</td>
 </tr>
 <tr>
-<td>Pi C (<code>pi_c</code>)</td>
+<td>Compressor Total-Pressure Ratio (<code>pi_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10</td>
 </tr>
@@ -1551,7 +1576,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1333650</td>
 </tr>
 <tr>
-<td>Tau C (<code>tau_c</code>)</td>
+<td>Compressor Total-Temperature Ratio (<code>tau_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.0771139</td>
 </tr>
@@ -1758,6 +1783,11 @@ component changes. All table values are SI.</p>
 </tbody>
 </table>
 <table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
 <thead>
 <tr>
 <th>Output</th>
@@ -1777,7 +1807,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">49.999365</td>
 </tr>
 <tr>
-<td>Area Ratio 9 (<code>area_ratio_9</code>)</td>
+<td>Exit Area / Reference Exit Area (<code>area_ratio_9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.0000982</td>
 </tr>
@@ -1787,12 +1817,12 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.0000442</td>
 </tr>
 <tr>
-<td>Eta C (<code>eta_c</code>)</td>
+<td>Compressor Isentropic Efficiency (<code>eta_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.8641</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.31184934</td>
 </tr>
@@ -1802,7 +1832,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.03567439</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.2528464</td>
 </tr>
@@ -1817,37 +1847,37 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">40350.91</td>
 </tr>
 <tr>
-<td>Npr (<code>npr</code>)</td>
+<td>Nozzle Total/Static Pressure Ratio (<code>npr</code>)</td>
 <td>1</td>
 <td style="text-align: right;">11.621847</td>
 </tr>
 <tr>
-<td>Pi B (<code>pi_b</code>)</td>
+<td>Combustor Total-Pressure Ratio (<code>pi_b</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.94</td>
 </tr>
 <tr>
-<td>Pi C (<code>pi_c</code>)</td>
+<td>Compressor Total-Pressure Ratio (<code>pi_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10.000442</td>
 </tr>
 <tr>
-<td>Pi D (<code>pi_d</code>)</td>
+<td>Inlet Total-Pressure Recovery (<code>pi_d</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.87875</td>
 </tr>
 <tr>
-<td>Pi N (<code>pi_n</code>)</td>
+<td>Nozzle Total-Pressure Ratio (<code>pi_n</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.96</td>
 </tr>
 <tr>
-<td>Pi R (<code>pi_r</code>)</td>
+<td>Freestream Total/Static Pressure Ratio (<code>pi_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">7.8244491</td>
 </tr>
 <tr>
-<td>Pi T (<code>pi_t</code>)</td>
+<td>Turbine Total-Pressure Ratio (<code>pi_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.3746</td>
 </tr>
@@ -1857,32 +1887,34 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">807.02846</td>
 </tr>
 <tr>
-<td>Speed Ratio (<code>speed_ratio</code>)</td>
+<td>Shaft Speed / Reference Speed (<code>speed_ratio</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.0000131</td>
 </tr>
 <tr>
-<td>T9 Over T0 (<code>t9_over_t0</code>)</td>
+<td>Exit Static Temperature / Ambient Temperature
+(<code>t9_over_t0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">3.8459606</td>
 </tr>
 <tr>
-<td>Tau C (<code>tau_c</code>)</td>
+<td>Compressor Total-Temperature Ratio (<code>tau_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.0771</td>
 </tr>
 <tr>
-<td>Tau Lambda (<code>tau_lambda</code>)</td>
+<td>Turbine-Inlet Enthalpy / Ambient Enthalpy
+(<code>tau_lambda</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10.250645</td>
 </tr>
 <tr>
-<td>Tau R (<code>tau_r</code>)</td>
+<td>Freestream Total/Static Temperature Ratio (<code>tau_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.8</td>
 </tr>
 <tr>
-<td>Tau T (<code>tau_t</code>)</td>
+<td>Turbine Total-Temperature Ratio (<code>tau_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.8155</td>
 </tr>
@@ -1892,7 +1924,8 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">4.4204625e-05</td>
 </tr>
 <tr>
-<td>V9 Over A0 (<code>v9_over_a0</code>)</td>
+<td>Exit Velocity / Freestream Sound Speed
+(<code>v9_over_a0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">4.2504355</td>
 </tr>
@@ -2140,17 +2173,17 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">82.362889</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Eta Propulsive (<code>eta_propulsive</code>)</td>
+<td>Propulsive Efficiency (<code>eta_propulsive</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Eta Thermal (<code>eta_thermal</code>)</td>
+<td>Thermal Efficiency (<code>eta_thermal</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.36709351</td>
 </tr>
@@ -2170,7 +2203,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.0000028</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.8268453</td>
 </tr>
@@ -2185,7 +2218,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">111590.32</td>
 </tr>
 <tr>
-<td>Npr (<code>npr</code>)</td>
+<td>Nozzle Total/Static Pressure Ratio (<code>npr</code>)</td>
 <td>1</td>
 <td style="text-align: right;">5.805244</td>
 </tr>
@@ -2635,12 +2668,12 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.9</td>
 </tr>
 <tr>
-<td>Eta C (<code>eta_c</code>)</td>
+<td>Compressor Isentropic Efficiency (<code>eta_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.89315327</td>
 </tr>
 <tr>
-<td>Pi C (<code>pi_c</code>)</td>
+<td>Compressor Total-Pressure Ratio (<code>pi_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.6</td>
 </tr>
@@ -2660,7 +2693,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">213384</td>
 </tr>
 <tr>
-<td>Tau C (<code>tau_c</code>)</td>
+<td>Compressor Total-Temperature Ratio (<code>tau_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.1609139</td>
 </tr>
@@ -2859,22 +2892,22 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">3.065042</td>
 </tr>
 <tr>
-<td>Eta C (<code>eta_c</code>)</td>
+<td>Compressor Isentropic Efficiency (<code>eta_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.84173261</td>
 </tr>
 <tr>
-<td>Eta F (<code>eta_f</code>)</td>
+<td>Fan Isentropic Efficiency (<code>eta_f</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.88147899</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.30597905</td>
 </tr>
 <tr>
-<td>Eta T (<code>eta_t</code>)</td>
+<td>Turbine Isentropic Efficiency (<code>eta_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.92003128</td>
 </tr>
@@ -2889,32 +2922,32 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.1542052</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.3934202</td>
 </tr>
 <tr>
-<td>Pi C (<code>pi_c</code>)</td>
+<td>Compressor Total-Pressure Ratio (<code>pi_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">36</td>
 </tr>
 <tr>
-<td>Pi D (<code>pi_d</code>)</td>
+<td>Inlet Total-Pressure Recovery (<code>pi_d</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.99</td>
 </tr>
 <tr>
-<td>Pi F (<code>pi_f</code>)</td>
+<td>Fan Total-Pressure Ratio (<code>pi_f</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.7</td>
 </tr>
 <tr>
-<td>Pi R (<code>pi_r</code>)</td>
+<td>Freestream Total/Static Pressure Ratio (<code>pi_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.52434</td>
 </tr>
 <tr>
-<td>Pi T (<code>pi_t</code>)</td>
+<td>Turbine Total-Pressure Ratio (<code>pi_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.065958072</td>
 </tr>
@@ -2939,32 +2972,34 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.0561013</td>
 </tr>
 <tr>
-<td>T9 Over T0 (<code>t9_over_t0</code>)</td>
+<td>Exit Static Temperature / Ambient Temperature
+(<code>t9_over_t0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">3.196129</td>
 </tr>
 <tr>
-<td>Tau C (<code>tau_c</code>)</td>
+<td>Compressor Total-Temperature Ratio (<code>tau_c</code>)</td>
 <td>1</td>
 <td style="text-align: right;">3.1193513</td>
 </tr>
 <tr>
-<td>Tau F (<code>tau_f</code>)</td>
+<td>Fan Total-Temperature Ratio (<code>tau_f</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.1857152</td>
 </tr>
 <tr>
-<td>Tau Lambda (<code>tau_lambda</code>)</td>
+<td>Turbine-Inlet Enthalpy / Ambient Enthalpy
+(<code>tau_lambda</code>)</td>
 <td>1</td>
 <td style="text-align: right;">8.8461538</td>
 </tr>
 <tr>
-<td>Tau R (<code>tau_r</code>)</td>
+<td>Freestream Total/Static Temperature Ratio (<code>tau_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.128</td>
 </tr>
 <tr>
-<td>Tau T (<code>tau_t</code>)</td>
+<td>Turbine Total-Temperature Ratio (<code>tau_t</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.54860834</td>
 </tr>
@@ -2984,7 +3019,8 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.1861396</td>
 </tr>
 <tr>
-<td>V9 Over A0 (<code>v9_over_a0</code>)</td>
+<td>Exit Velocity / Freestream Sound Speed
+(<code>v9_over_a0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">2.4264433</td>
 </tr>
@@ -3239,17 +3275,17 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.5933537</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Eta Propulsive (<code>eta_propulsive</code>)</td>
+<td>Propulsive Efficiency (<code>eta_propulsive</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Eta Thermal (<code>eta_thermal</code>)</td>
+<td>Thermal Efficiency (<code>eta_thermal</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.36371482</td>
 </tr>
@@ -3279,7 +3315,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.76103427</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.86174417</td>
 </tr>
@@ -3299,7 +3335,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">16.555392</td>
 </tr>
 <tr>
-<td>Pi F (<code>pi_f</code>)</td>
+<td>Fan Total-Pressure Ratio (<code>pi_f</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.4973697</td>
 </tr>
@@ -3319,7 +3355,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">2.444799</td>
 </tr>
 <tr>
-<td>Tau F (<code>tau_f</code>)</td>
+<td>Fan Total-Temperature Ratio (<code>tau_f</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.138697</td>
 </tr>
@@ -3557,17 +3593,17 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.34160978</td>
 </tr>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.1029191</td>
 </tr>
 <tr>
-<td>Eta Propulsive (<code>eta_propulsive</code>)</td>
+<td>Propulsive Efficiency (<code>eta_propulsive</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.3333122</td>
 </tr>
 <tr>
-<td>Eta Thermal (<code>eta_thermal</code>)</td>
+<td>Thermal Efficiency (<code>eta_thermal</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.30877688</td>
 </tr>
@@ -3582,7 +3618,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.60041514</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.6765082</td>
 </tr>
@@ -3617,7 +3653,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">102483.79</td>
 </tr>
 <tr>
-<td>Npr (<code>npr</code>)</td>
+<td>Nozzle Total/Static Pressure Ratio (<code>npr</code>)</td>
 <td>1</td>
 <td style="text-align: right;">4.5923828</td>
 </tr>
@@ -3642,7 +3678,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1.246135</td>
 </tr>
 <tr>
-<td>Tau F (<code>tau_f</code>)</td>
+<td>Fan Total-Temperature Ratio (<code>tau_f</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.4173172</td>
 </tr>
@@ -3761,7 +3797,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">3000</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -3950,7 +3986,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">3000</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -4146,7 +4182,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">3000</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -6260,7 +6296,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -6451,6 +6487,11 @@ component changes. All table values are SI.</p>
 </tbody>
 </table>
 <table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 40%" />
+</colgroup>
 <thead>
 <tr>
 <th>Output</th>
@@ -6460,7 +6501,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Eta Overall (<code>eta_overall</code>)</td>
+<td>Overall Efficiency (<code>eta_overall</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.20078579</td>
 </tr>
@@ -6470,32 +6511,32 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.04629574</td>
 </tr>
 <tr>
-<td>Mach9 (<code>mach9</code>)</td>
+<td>Exit Mach Number (<code>mach9</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.4108471</td>
 </tr>
 <tr>
-<td>Npr (<code>npr</code>)</td>
+<td>Nozzle Total/Static Pressure Ratio (<code>npr</code>)</td>
 <td>1</td>
 <td style="text-align: right;">3.1023315</td>
 </tr>
 <tr>
-<td>Pi B (<code>pi_b</code>)</td>
+<td>Combustor Total-Pressure Ratio (<code>pi_b</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.94</td>
 </tr>
 <tr>
-<td>Pi D (<code>pi_d</code>)</td>
+<td>Inlet Total-Pressure Recovery (<code>pi_d</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.87875</td>
 </tr>
 <tr>
-<td>Pi N (<code>pi_n</code>)</td>
+<td>Nozzle Total-Pressure Ratio (<code>pi_n</code>)</td>
 <td>1</td>
 <td style="text-align: right;">0.96</td>
 </tr>
 <tr>
-<td>Pi R (<code>pi_r</code>)</td>
+<td>Freestream Total/Static Pressure Ratio (<code>pi_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">7.8244491</td>
 </tr>
@@ -6505,17 +6546,19 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">674.31292</td>
 </tr>
 <tr>
-<td>T9 Over T0 (<code>t9_over_t0</code>)</td>
+<td>Exit Static Temperature / Ambient Temperature
+(<code>t9_over_t0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">6.396569</td>
 </tr>
 <tr>
-<td>Tau Lambda (<code>tau_lambda</code>)</td>
+<td>Turbine-Inlet Enthalpy / Ambient Enthalpy
+(<code>tau_lambda</code>)</td>
 <td>1</td>
 <td style="text-align: right;">10.250645</td>
 </tr>
 <tr>
-<td>Tau R (<code>tau_r</code>)</td>
+<td>Freestream Total/Static Temperature Ratio (<code>tau_r</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1.8</td>
 </tr>
@@ -6525,7 +6568,8 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">6.8656167e-05</td>
 </tr>
 <tr>
-<td>V9 Over A0 (<code>v9_over_a0</code>)</td>
+<td>Exit Velocity / Freestream Sound Speed
+(<code>v9_over_a0</code>)</td>
 <td>1</td>
 <td style="text-align: right;">3.4328348</td>
 </tr>
@@ -7016,7 +7060,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -7300,7 +7344,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -8174,7 +8218,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.60478655</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -8624,7 +8668,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.60478655</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -8637,7 +8681,7 @@ component changes. All table values are SI.</p>
 <td>Element Relative Residual
 (<code>element_relative_residual</code>)</td>
 <td>1</td>
-<td style="text-align: right;">2.4041836e-15</td>
+<td style="text-align: right;">1.3113729e-15</td>
 </tr>
 <tr>
 <td>Enthalpy (<code>enthalpy</code>)</td>
@@ -8677,12 +8721,12 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Flow Energy Residual (<code>flow_energy_residual</code>)</td>
 <td>W</td>
-<td style="text-align: right;">-9.3132257e-10</td>
+<td style="text-align: right;">-1.8626451e-09</td>
 </tr>
 <tr>
 <td>Flow Momentum Residual (<code>flow_momentum_residual</code>)</td>
 <td>N</td>
-<td style="text-align: right;">7.1054274e-14</td>
+<td style="text-align: right;">1.0516032e-12</td>
 </tr>
 <tr>
 <td>Specific Heat Ratio γ (<code>gamma</code>)</td>
@@ -8728,7 +8772,7 @@ component changes. All table values are SI.</p>
 <tr>
 <td>Mass Relative Residual (<code>mass_relative_residual</code>)</td>
 <td>1</td>
-<td style="text-align: right;">2.2010527e-15</td>
+<td style="text-align: right;">1.1005264e-15</td>
 </tr>
 <tr>
 <td>Mole Fraction Ar (<code>mole_fraction_Ar</code>)</td>
@@ -9003,7 +9047,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">0.01</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -9290,7 +9334,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -9599,7 +9643,7 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">177</td>
 </tr>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -9684,7 +9728,8 @@ component changes. All table values are SI.</p>
 <td style="text-align: right;">1500</td>
 </tr>
 <tr>
-<td>Thermostat Heat Rate (<code>thermostat_heat_rate</code>)</td>
+<td>Thermostat Heat Input per Unit Volume
+(<code>thermostat_heat_rate</code>)</td>
 <td>W/m³</td>
 <td style="text-align: right;">3171942.5</td>
 </tr>
@@ -10172,7 +10217,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -10511,7 +10556,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -10709,7 +10754,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -10902,7 +10947,7 @@ component changes. All table values are SI.</p>
 </thead>
 <tbody>
 <tr>
-<td>Completed (<code>completed</code>)</td>
+<td>Completed (1 = Yes, 0 = No) (<code>completed</code>)</td>
 <td>1</td>
 <td style="text-align: right;">1</td>
 </tr>
